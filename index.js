@@ -69,6 +69,13 @@ backgroundId++
 //   ))
 // }
 
+function mousedownListener(e) {
+  window.removeEventListener('mousedown', this.mousedownListener)
+  currentScene = new Start()
+  currentScene.start()
+  gameLoop()
+}
+
 // game loop
 
 function gameLoop() {
@@ -78,6 +85,25 @@ function gameLoop() {
   currentScene.tick()
 }
 
-currentScene = new Start()
-currentScene.start()
-gameLoop()
+window.addEventListener('mousedown', this.mousedownListener)
+
+ctx.save();
+ctx.beginPath()
+ctx.strokeStyle = "rgb(0,0,0)"
+ctx.lineWidth = 3
+ctx.rect(0, 0, canvasWidth, canvasHeight)
+ctx.stroke()
+ctx.restore()
+
+
+drawing = new Image();
+drawing.src = "./power_button.png"; // can also be a remote URL e.g. http://
+drawing.onload = function() {
+  ctx.save()
+  ctx.drawImage(drawing, ((canvasWidth / 2) - (drawing.width / 8)), ((canvasHeight / 2) - (drawing.height / 8)), drawing.width / 4, drawing.height / 4)
+  ctx.beginPath()
+  ctx.strokeStyle = "rgb(0,0,0)"
+  ctx.lineWidth = 3
+  ctx.stroke()
+  ctx.restore()
+};
