@@ -12,7 +12,7 @@ const ctx = canvas.getContext('2d')
 const canvasWidth = 800
 const canvasHeight = 600
 
-var xMouse, yMouse, hq = false, musicOn = true, music, startSound;
+var xMouse, yMouse, easyMode = true, hq = false, musicOn = true, music, startSound;
 
 canvas.width = canvasWidth
 canvas.height = canvasHeight
@@ -73,6 +73,12 @@ function mousedownListener(e) {
   window.removeEventListener('mousedown', this.mousedownListener)
   currentScene = new Start()
   currentScene.start()
+  music = new Audio('./start_music.mp3')
+  music.volume = 0.75
+  startSound = new Audio('./start_sound.mp3')
+  startSound.volume = 0.10
+  music.play()
+  startSound.play()
   gameLoop()
 }
 
