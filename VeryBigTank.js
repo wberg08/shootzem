@@ -52,7 +52,6 @@ class VeryBigTank {
 
     if (this.hitPoints <= 0) {
       if (this.deadTick > VeryBigTank.deadTickLimit) {
-        score++
         enemies.delete(this.id)
       }
 
@@ -394,6 +393,7 @@ class VeryBigTank {
         foreground.set(foregroundId, new PowerUpHit(foregroundId, this.x, this.y, 'Combo x' + combo, '255, 255, 255', '24px'))
         foregroundId++
       }
+      score += 100 + (combo * 100)
     } else {
       var hitAudio = new Audio('./hit.mp3')
       hitAudio.volume = 0.25

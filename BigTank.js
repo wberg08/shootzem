@@ -53,7 +53,6 @@ class BigTank {
 
     if (this.hitPoints <= 0) {
       if (this.deadTick > BigTank.deadTickLimit) {
-        score++
         enemies.delete(this.id)
         if (typeof this.powerUp !== "undefined") {
           powerUps.set(powerUpId, new PowerUp(powerUpId, this.x, this.y, this.powerUp.type, this.powerUp.hitPoints))
@@ -395,10 +394,11 @@ class BigTank {
       dieAudio.volume = 0.75
       dieAudio.play()
       combo++
-      if (combo > 1) {
+      if (combo > 1) {  
         foreground.set(foregroundId, new PowerUpHit(foregroundId, this.x, this.y, 'Combo x' + combo, '255, 255, 255', '24px'))
         foregroundId++
       }
+      score += 50 + (combo * 50)
     } else {
       var hitAudio = new Audio('./hit.mp3')
       hitAudio.volume = 0.25

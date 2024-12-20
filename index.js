@@ -12,7 +12,7 @@ const ctx = canvas.getContext('2d')
 const canvasWidth = 800
 const canvasHeight = 600
 
-var xMouse, yMouse, easyMode = true, hq = false, musicOn = true, music, startSound;
+var xMouse, yMouse, easyMode = true, hq = false, musicOn = true, music, startSound, score = 0
 
 canvas.width = canvasWidth
 canvas.height = canvasHeight
@@ -28,8 +28,6 @@ const muzzleFlashes = new Map()
 const projectiles = new Map()
 const foreground = new Map()
 
-var storyboardFrame = ''
-
 var projectileCountLimit = 1
 var crumpId = 1
 var muzzleFlashId = 1
@@ -44,16 +42,6 @@ var combo = 0;
 const player = new Player(playerX, playerY, 30, '#2222FF')
 var score = 0
 var failed = false
-
-for (var i = 430; i <= 680; i += 125) {
-  for (var j = 90; j <= 500; j += 125) {
-    background.set(backgroundId, new Building2(backgroundId, i, j))
-    backgroundId++
-  }
-}
-
-background.set(backgroundId, new Building3(backgroundId, 250, 50))
-backgroundId++
 
 // var blueprint_background = new Image();
 // blueprint_background.src = 'future.png'; 
