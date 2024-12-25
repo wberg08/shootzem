@@ -10,7 +10,7 @@ class Projectile {
     this.currentX = currentX
     this.currentY = currentY
     this.fire2Audio = new Audio('./fire2.mp3')
-    this.fire2Audio.volume = 0.3
+    this.fire2Audio.volume = soundVolume / 2
     this.fire2Audio.play()
   }
 

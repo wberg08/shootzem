@@ -391,7 +391,7 @@ class BigTank {
 
     if (this.hitPoints == 0) {
       var dieAudio = new Audio('./die.mp3')
-      dieAudio.volume = 0.75
+      dieAudio.volume = soundVolume
       dieAudio.play()
       combo++
       if (combo > 1) {  
@@ -401,7 +401,7 @@ class BigTank {
       score += 50 + (combo * 50)
     } else {
       var hitAudio = new Audio('./hit.mp3')
-      hitAudio.volume = 0.25
+      hitAudio.volume = soundVolume
       hitAudio.play()
     }
   }

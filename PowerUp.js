@@ -29,12 +29,12 @@ class PowerUp {
     if (this.type == "projectile") {
       if (this.hitPoints == 0) {
         var bleep = new Audio('./powerup-doublebleep.mp3')
-        bleep.volume = 0.25
+        bleep.volume = soundVolume / 3
         bleep.play()
         text = 'Extra shot!'
       } else {
         var bleep = new Audio('./powerup-bleep.mp3')
-        bleep.volume = 0.25
+        bleep.volume = soundVolume / 3
         bleep.play()
         text = this.hitPoints
       }
