@@ -11,7 +11,7 @@ module rotate_about_pt(a, v, pt) {
 }
 
 difference() { difference() {
- import("G:/stuff/projects/ufo/simplify_simplify_Octo.stl", convexity=3);
+ import("C:\Users\wberg\stuff\workspace\shootzem\ufo\simplify_simplify_Octo.stl", convexity=3);
 
 translate([93, 96, 44]) sphere(9);
 }
