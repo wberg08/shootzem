@@ -330,14 +330,14 @@ colourWaterButton.addEventListener('click', () => {
   hSlider2.value = 241
   hSlider3.value = 186
   hSlider4.value = 234
-  lSlider1.value = 74
-  lSlider2.value = 50
-  lSlider3.value = 79
-  lSlider4.value = 34
   sSlider1.value = 100
   sSlider2.value = 50
   sSlider3.value = 92
   sSlider4.value = 100
+  lSlider1.value = 74
+  lSlider2.value = 50
+  lSlider3.value = 79
+  lSlider4.value = 34
 });
 
 colourSandButton.addEventListener('click', () => {
@@ -345,14 +345,14 @@ colourSandButton.addEventListener('click', () => {
   hSlider2.value = 33
   hSlider3.value = 40
   hSlider4.value = 31
-  lSlider1.value = 74
-  lSlider2.value = 53
-  lSlider3.value = 85
-  lSlider4.value = 34
   sSlider1.value = 82
   sSlider2.value = 94
   sSlider3.value = 100
   sSlider4.value = 100
+  lSlider1.value = 74
+  lSlider2.value = 53
+  lSlider3.value = 85
+  lSlider4.value = 34
 });
 
 crossPatternWaveButton.addEventListener('click', () => {
