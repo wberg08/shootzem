@@ -42,12 +42,12 @@ class Start {
   draw() {
     ctx.save()
 
-    const checkColour1Hue = this.checkColour1SandHue + Math.sin(this.tickCount/100) * (this.checkColour1WaterHue - this.checkColour1SandHue)
-    const checkColour1Sat = this.checkColour1SandSat + Math.sin(this.tickCount/100) * (this.checkColour1WaterSat - this.checkColour1SandSat)
-    const checkColour1Lum = this.checkColour1SandLum + Math.sin(this.tickCount/100) * (this.checkColour1WaterLum - this.checkColour1SandLum)
-    const checkColour2Hue = this.checkColour2SandHue + Math.sin(this.tickCount/100) * (this.checkColour2WaterHue - this.checkColour2SandHue)
-    const checkColour2Sat = this.checkColour2SandSat + Math.sin(this.tickCount/100) * (this.checkColour2WaterSat - this.checkColour2SandSat)
-    const checkColour2Lum = this.checkColour2SandLum + Math.sin(this.tickCount/100) * (this.checkColour2WaterLum - this.checkColour2SandLum)
+    const checkColour1Hue = this.checkColour1SandHue + Math.sin(this.tickCount/500) * (this.checkColour1WaterHue - this.checkColour1SandHue)
+    const checkColour1Sat = this.checkColour1SandSat + Math.sin(this.tickCount/500) * (this.checkColour1WaterSat - this.checkColour1SandSat)
+    const checkColour1Lum = this.checkColour1SandLum + Math.sin(this.tickCount/500) * (this.checkColour1WaterLum - this.checkColour1SandLum)
+    const checkColour2Hue = this.checkColour2SandHue + Math.sin(this.tickCount/500) * (this.checkColour2WaterHue - this.checkColour2SandHue)
+    const checkColour2Sat = this.checkColour2SandSat + Math.sin(this.tickCount/500) * (this.checkColour2WaterSat - this.checkColour2SandSat)
+    const checkColour2Lum = this.checkColour2SandLum + Math.sin(this.tickCount/500) * (this.checkColour2WaterLum - this.checkColour2SandLum)
 
     const checkColour1 = 'hsl(' + checkColour1Hue + ' ' + checkColour1Sat + ' ' + checkColour1Lum + ')'
     const checkColour2 = 'hsl(' + checkColour2Hue + ' ' + checkColour2Sat + ' ' + checkColour2Lum + ')'
@@ -82,15 +82,15 @@ class Start {
       [true, false, true, true, false, true, false, false],
       [false, true, false, true, true, false, true, false],
       [false, false, true, false, true, true, false, true]
-    ];
+    ]
     const crossSize = 1
 
-    const crossColour1Hue = this.crossColour1SandHue + Math.sin(this.tickCount/100) * (this.crossColour1WaterHue - this.crossColour1SandHue)
-    const crossColour1Sat = this.crossColour1SandSat + Math.sin(this.tickCount/100) * (this.crossColour1WaterSat - this.crossColour1SandSat)
-    const crossColour1Lum = this.crossColour1SandLum + Math.sin(this.tickCount/100) * (this.crossColour1WaterLum - this.crossColour1SandLum)
-    const crossColour2Hue = this.crossColour2SandHue + Math.sin(this.tickCount/100) * (this.crossColour2WaterHue - this.crossColour2SandHue)
-    const crossColour2Sat = this.crossColour2SandSat + Math.sin(this.tickCount/100) * (this.crossColour2WaterSat - this.crossColour2SandSat)
-    const crossColour2Lum = this.crossColour2SandLum + Math.sin(this.tickCount/100) * (this.crossColour2WaterLum - this.crossColour2SandLum)
+    const crossColour1Hue = this.crossColour1SandHue + Math.sin(this.tickCount/500) * (this.crossColour1WaterHue - this.crossColour1SandHue)
+    const crossColour1Sat = this.crossColour1SandSat + Math.sin(this.tickCount/500) * (this.crossColour1WaterSat - this.crossColour1SandSat)
+    const crossColour1Lum = this.crossColour1SandLum + Math.sin(this.tickCount/500) * (this.crossColour1WaterLum - this.crossColour1SandLum)
+    const crossColour2Hue = this.crossColour2SandHue + Math.sin(this.tickCount/500) * (this.crossColour2WaterHue - this.crossColour2SandHue)
+    const crossColour2Sat = this.crossColour2SandSat + Math.sin(this.tickCount/500) * (this.crossColour2WaterSat - this.crossColour2SandSat)
+    const crossColour2Lum = this.crossColour2SandLum + Math.sin(this.tickCount/500) * (this.crossColour2WaterLum - this.crossColour2SandLum)
 
     const crossColour1 = 'hsl(' + crossColour1Hue + ' ' + crossColour1Sat + ' ' + crossColour1Lum + ')'
     const crossColour2 = 'hsl(' + crossColour2Hue + ' ' + crossColour2Sat + ' ' + crossColour2Lum + ')'
@@ -434,6 +434,10 @@ class Start {
 
     document.body.appendChild(musicVolumeSlider);
     document.body.appendChild(soundVolumeSlider);
+
+    if (lost) {
+      lost = false
+    }
   }
 
   end() {

@@ -2,6 +2,8 @@ class Level1 {
 
   tickCount = 0
 
+  static loseLineX = 150
+
   static purpleTankBodyColour = '#791394'
   static purpleTankTrackColour = '#b063db'
 
@@ -11,7 +13,10 @@ class Level1 {
   static redTankBodyColour = '#bf1b1b'
   static redTankTrackColour = '#c26161'
 
-  constructor() {}
+  constructor() {
+    this.backgroundImage = new Image()
+    this.backgroundImage.src = 'water_invert_transparency.png'
+  }
 
   static bigTankPath1 = [
     ['forwards', 1.5, 150],
@@ -58,8 +63,16 @@ class Level1 {
     ['forwards', 0.5, 5000]
   ]
 
+  static straightPath = [
+    ['forwards', 1, 5000]
+  ]
+
+  static straightPathFast = [
+    ['forwards', 4, 5000]
+  ]
+
   static wave1() {
-    enemies.set(1, new BigTank(
+    groundEnemies.set(1, new BigTank(
       1,
       canvasWidth + 100,
       175,
@@ -68,52 +81,68 @@ class Level1 {
       Level1.tealTankTrackColour,
       2,
       { type: 'projectile', hitPoints: 5 },
-      enemies
+      groundEnemies
     ))
 
-    enemies.set(2, new BigTank(
-      2,
+    if (!easyMode) {
+      groundEnemies.set(2, new BigTank(
+        2,
+        canvasWidth + 100,
+        300,
+        Level1.bigTankPath2,
+        Level1.purpleTankBodyColour,
+        Level1.purpleTankTrackColour,
+        1,
+        undefined,
+        groundEnemies
+      ))
+    }
+
+    flyingEnemies.set(1, new Saucer(
+      1,
       canvasWidth + 100,
       300,
-      Level1.bigTankPath2,
-      Level1.purpleTankBodyColour,
-      Level1.purpleTankTrackColour,
-      1,
-      undefined,
-      enemies
+      Level1.straightPath,
+      2,
+      { type: 'projectile', hitPoints: 5 },
+      flyingEnemies
     ))
   }
 
   static wave2() {
-    enemies.set(4, new BigTank(
-      4,
-      canvasWidth + 100,
-      300,
-      Level1.bigTankPath2,
-      Level1.purpleTankBodyColour,
-      Level1.purpleTankTrackColour,
-      1,
-      undefined,
-      enemies
-    ))
+    if (!easyMode) {
+      groundEnemies.set(4, new BigTank(
+        4,
+        canvasWidth + 100,
+        300,
+        Level1.bigTankPath2,
+        Level1.purpleTankBodyColour,
+        Level1.purpleTankTrackColour,
+        1,
+        undefined,
+        groundEnemies
+      ))
+    }
   }
 
   static wave2a() {
-    enemies.set(7, new BigTank(
-      7,
-      canvasWidth + 100,
-      175,
-      Level1.bigTankPath1,
-      Level1.redTankBodyColour,
-      Level1.redTankTrackColour,
-      2,
-      undefined,
-      enemies
-    ))
+    if (!easyMode) {
+      groundEnemies.set(7, new BigTank(
+        7,
+        canvasWidth + 100,
+        175,
+        Level1.bigTankPath1,
+        Level1.redTankBodyColour,
+        Level1.redTankTrackColour,
+        2,
+        undefined,
+        groundEnemies
+      ))
+    }
   }
 
   static wave3a() {
-    enemies.set(3, new BigTank(
+    groundEnemies.set(3, new BigTank(
       3,
       canvasWidth + 100,
       175,
@@ -122,12 +151,12 @@ class Level1 {
       Level1.purpleTankTrackColour,
       1,
       undefined,
-      enemies
+      groundEnemies
     ))
   }
 
   static wave3() {
-    enemies.set(5, new BigTank(
+    groundEnemies.set(5, new BigTank(
       5,
       canvasWidth + 100,
       175,
@@ -136,21 +165,23 @@ class Level1 {
       Level1.purpleTankTrackColour,
       1,
       undefined,
-      enemies
+      groundEnemies
     ))
   }
 
   static wave4() {
-    enemies.set(6, new VeryBigTank(
-      6,
-      canvasWidth + 100,
-      428,
-      Level1.slowTankPath,
-      Level1.redTankBodyColour,
-      Level1.redTankTrackColour,
-      5,
-      enemies
-    ))
+    if (!easyMode) {
+      groundEnemies.set(6, new VeryBigTank(
+        6,
+        canvasWidth + 100,
+        428,
+        Level1.slowTankPath,
+        Level1.redTankBodyColour,
+        Level1.redTankTrackColour,
+        5,
+        groundEnemies
+      ))
+    }
   }
 
   draw() {
@@ -160,12 +191,10 @@ class Level1 {
     ctx.fillRect(0, 0, canvasWidth, canvasHeight)
 
     ctx.fillStyle = '#42bfdb'
-    ctx.fillRect(0, 0, 150, canvasHeight)
+    ctx.fillRect(0, 0, Level1.loseLineX, canvasHeight)
 
-    const image = new Image()
-    image.src = 'water_invert_transparency.png'
     ctx.globalAlpha = 0.5
-    ctx.drawImage(image, 0, 0);
+    ctx.drawImage(this.backgroundImage, 0, 0);
     ctx.globalAlpha = 1
 
     ctx.restore()
@@ -176,8 +205,11 @@ class Level1 {
     crumps.forEach((crump) => {
       crump.update()
     })
-    enemies.forEach((enemy) => {
-      enemy.update()
+    groundEnemies.forEach((groundEnemy) => {
+      groundEnemy.update()
+    })
+    flyingEnemies.forEach((flyingEnemy) => {
+      flyingEnemy.update()
     })
     powerUps.forEach((powerUp) => {
       powerUp.update()
@@ -206,7 +238,7 @@ class Level1 {
     ctx.restore()
 
     // render the score
-    
+
     // ctx.save()
     // var gradient3
     // if (hq) {
@@ -240,23 +272,35 @@ class Level1 {
     // }
     // ctx.restore()
 
-    // if (failed) {
-    //   ctx.fillStyle = 'black'
-    //   ctx.font = "30px Comic Sans MS"
-    //   ctx.fillText("doesnt matter now", 25, 50)
+    console.log("lost: " + lost)
+    if (lost) {
+      var wipeAlpha = Math.min(0.5,(lostTick / 100))
 
-    //   ctx.fillStyle = '#'+Math.random().toString(16).substr(-6)
-    //   ctx.font = "75px Comic Sans MS"
-    //   ctx.fillText("CONGRATULATIONS", 48, canvasHeight / 2)
-    //   ctx.fillText("YOU FAILED", 48, (canvasHeight / 2) + 100)
-    // } else {
-    //   ctx.fillStyle = 'black'
-    //   ctx.font = "30px Arial"
-    //   ctx.fillText(score, 25, 50)
-    // }
+      ctx.save()
+      ctx.beginPath()
+      ctx.rect(0, 0, canvasWidth, canvasHeight)
+      ctx.fillStyle = "rgba(0,0,0, " + wipeAlpha + ")"
+      ctx.fill()
+      ctx.restore()
+
+      ctx.save()
+      this.drawButton((canvasWidth / 2) - 100, (canvasHeight / 2) - 50, 200, 100, "FAILED")
+      ctx.restore()
+    }
   }
 
   tick() {
+    groundEnemies.forEach((groundEnemy) => {
+      if (groundEnemy.x <= Level1.loseLineX) {
+        lost = true
+      }
+    })
+    flyingEnemies.forEach((flyingEnemy) => {
+      if (flyingEnemy.x <= Level1.loseLineX) {
+        lost = true
+      }
+    })
+
     if (this.tickCount == 0) {
       Level1.wave1()
     }
@@ -277,6 +321,9 @@ class Level1 {
     }
 
     this.tickCount++
+    if (lost) {
+      lostTick++
+    }
   }
 
   mousedownListener(e) {
@@ -292,7 +339,8 @@ class Level1 {
       && e.clientY <= player.y
       && e.clientX < canvasWidth
       && e.clientY < canvasHeight
-      && projectiles.size < projectileCountLimit) {
+      && projectiles.size < projectileCountLimit
+      && !lost) {
 
       // calculate where the end of the barrel is using this code lifted from Player.js - yuck!
       var theta = Math.atan((yMouse - playerY) / (xMouse - playerX))
@@ -322,6 +370,13 @@ class Level1 {
       ))
       muzzleFlashId++;
     }
+
+    console.log("lost: " + lost)
+    if (lost && (lostTick >= 100)) {
+      currentScene.end()
+      currentScene = new Start()
+      currentScene.start()
+    }
   }
 
   mousemoveListener(e) {
@@ -330,6 +385,8 @@ class Level1 {
   }
 
   start() {
+    console.log('lost: ' + lost)
+
     window.addEventListener('mousedown', this.mousedownListener)
     window.addEventListener('mousemove', this.mousemoveListener)
 
@@ -345,9 +402,61 @@ class Level1 {
   }
 
   end() {
+    lostTick = 0
+
+    groundEnemies = new Map()
+    flyingEnemies = new Map()
+
     window.removeEventListener('mousedown', this.mousedownListener)
     window.removeEventListener('mousemove', this.mousemoveListener)
   }
 
-}
+  drawButton(x, y, width, height, text) {
+    ctx.save();
 
+    var gradient3
+    if (hq) {
+      var highlight = Math.sin(this.tickCount / 50) * 10
+
+      gradient3 = ctx.createLinearGradient(highlight * 40, 0, highlight * 25 + 505, -50);
+      // Add three color stops
+      gradient3.addColorStop(0, "rgba(255, 255, 255, 0)")
+      gradient3.addColorStop(0.20, "rgba(255, 255, 255, 0)")
+      gradient3.addColorStop(0.25, "rgba(255, 255, 255, 1)")
+      gradient3.addColorStop(0.3, "rgba(255, 255, 255, 0)")
+      gradient3.addColorStop(0.5, "rgba(255, 255, 255, 0)")
+      gradient3.addColorStop(0.70, "rgba(255, 255, 255, 0)")
+      gradient3.addColorStop(0.75, "rgba(255, 255, 255, 1)")
+      gradient3.addColorStop(0.8, "rgba(255, 255, 255, 0)")
+      gradient3.addColorStop(1, "rgba(255, 255, 255, 0)")
+    }
+
+    ctx.beginPath()
+    ctx.fillStyle = "rgb(100,100,100)"
+    ctx.strokeStyle = "rgb(200,200,200)"
+    ctx.lineWidth = 3
+    ctx.rect(x, y, width, height)
+    ctx.fill()
+    ctx.stroke()
+    if (hq) {
+      ctx.lineWidth = 3
+      ctx.strokeStyle = gradient3
+      ctx.stroke()
+    }
+
+    ctx.font = "20px titleText"
+    ctx.textAlign = 'center'
+    ctx.fillStyle = "rgba(255, 255, 255)"
+    ctx.fillText(text, x + width / 2, y + 10 + height / 2)
+    if (hq) {
+      ctx.lineWidth = 5
+
+      // ctx.strokeStyle = "rgba(255, 255, 255)"
+      ctx.strokeStyle = gradient3
+      ctx.strokeText(text, x + width / 2, y + 10 + height / 2)
+    }
+
+    ctx.restore()
+  }
+
+}

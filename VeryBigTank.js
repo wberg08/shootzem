@@ -21,7 +21,7 @@ class VeryBigTank {
 
   static hitTickLimit = 5
 
-  constructor(id, x, y, path, bodyColour, trackColour, hitPoints, enemies) {
+  constructor(id, x, y, path, bodyColour, trackColour, hitPoints, groundEnemies) {
     // a negative value causes the tracks to display incorrectly
     // too high will cause precision errors
     // to avoid either of these cases, start at 2^15
@@ -43,7 +43,7 @@ class VeryBigTank {
     this.bodyColour = bodyColour
     this.trackColour = trackColour
     this.hitPoints = hitPoints
-    this.enemies = enemies
+    this.groundEnemies = groundEnemies
   }
 
   update() {
@@ -52,7 +52,7 @@ class VeryBigTank {
 
     if (this.hitPoints <= 0) {
       if (this.deadTick > VeryBigTank.deadTickLimit) {
-        enemies.delete(this.id)
+        groundEnemies.delete(this.id)
       }
 
       this.currentAction = 'wait'

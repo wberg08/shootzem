@@ -12,7 +12,7 @@ const ctx = canvas.getContext('2d')
 const canvasWidth = 800
 const canvasHeight = 600
 
-var xMouse, yMouse, easyMode = true, hq = false, music, startSound, score = 0, soundVolume = 0.5
+var xMouse, yMouse, easyMode = true, hq = false, music, startSound, score = 0, soundVolume = 0.5, lost = false, lostTick = 0
 
 canvas.width = canvasWidth
 canvas.height = canvasHeight
@@ -21,7 +21,8 @@ const playerX = 50
 const playerY = canvasHeight - 50
 
 const background = new Map()
-const enemies = new Map()
+var groundEnemies = new Map()
+var flyingEnemies = new Map()
 const powerUps = new Map()
 const crumps = new Map()
 const muzzleFlashes = new Map()
@@ -41,7 +42,6 @@ var combo = 0;
 
 const player = new Player(playerX, playerY, 30, '#2222FF')
 var score = 0
-var failed = false
 
 // var blueprint_background = new Image();
 // blueprint_background.src = 'future.png'; 
@@ -61,6 +61,14 @@ function mousedownListener(e) {
   window.removeEventListener('mousedown', this.mousedownListener)
   currentScene = new Start()
   currentScene.start()
+
+  //
+  // hq = true
+  // currentScene.end()
+  // currentScene = new Level1()
+  // currentScene.start()
+  //
+
   music = new Audio('./start_music.mp3')
   music.volume = 0.5
   startSound = new Audio('./start_sound.mp3')
