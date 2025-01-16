@@ -1,21 +1,75 @@
 class Start {
 
   tickCount = 0
+  cellSize = 30; // Size of each square
+
+  checkColour1WaterHue = 215
+  checkColour1WaterSat = 50
+  checkColour1WaterLum = 37
+  // checkColour1WaterLum = 74
+  checkColour2WaterHue = 241
+  checkColour2WaterSat = 25
+  checkColour2WaterLum = 25
+  // checkColour2WaterLum = 50
+
+  crossColour1WaterHue = 186
+  crossColour1WaterSat = 46
+  crossColour1WaterLum = 39
+  // crossColour1WaterLum = 79
+  crossColour2WaterHue = 234
+  crossColour2WaterSat = 50
+  crossColour2WaterLum = 17
+  // crossColour2WaterLum = 34
+
+  checkColour1SandHue = 36
+  checkColour1SandSat = 41
+  checkColour1SandLum = 37
+  // checkColour1SandLum = 74
+  checkColour2SandHue = 33
+  checkColour2SandSat = 47
+  checkColour2SandLum = 26
+  // checkColour2SandLum = 53
+
+  crossColour1SandHue = 40
+  crossColour1SandSat = 50
+  crossColour1SandLum = 42
+  // crossColour1SandLum = 85
+  crossColour2SandHue = 31
+  crossColour2SandSat = 50
+  crossColour2SandLum = 17
+  // crossColour2SandLum = 34
 
   draw() {
     ctx.save()
 
-    const cellSize = 30; // Size of each square
+    const checkColour1Hue = this.checkColour1SandHue + Math.sin(this.tickCount/100) * (this.checkColour1WaterHue - this.checkColour1SandHue)
+    const checkColour1Sat = this.checkColour1SandSat + Math.sin(this.tickCount/100) * (this.checkColour1WaterSat - this.checkColour1SandSat)
+    const checkColour1Lum = this.checkColour1SandLum + Math.sin(this.tickCount/100) * (this.checkColour1WaterLum - this.checkColour1SandLum)
+    const checkColour2Hue = this.checkColour2SandHue + Math.sin(this.tickCount/100) * (this.checkColour2WaterHue - this.checkColour2SandHue)
+    const checkColour2Sat = this.checkColour2SandSat + Math.sin(this.tickCount/100) * (this.checkColour2WaterSat - this.checkColour2SandSat)
+    const checkColour2Lum = this.checkColour2SandLum + Math.sin(this.tickCount/100) * (this.checkColour2WaterLum - this.checkColour2SandLum)
 
-    for (let row = -2; row - 2 < canvasHeight / cellSize; row++) {
-      for (let col = -2; col - 2 < canvasWidth / cellSize; col++) {
+    const checkColour1 = 'hsl(' + checkColour1Hue + ' ' + checkColour1Sat + ' ' + checkColour1Lum + ')'
+    const checkColour2 = 'hsl(' + checkColour2Hue + ' ' + checkColour2Sat + ' ' + checkColour2Lum + ')'
+
+    for (let row = -2; row - 2 < canvasHeight / this.cellSize; row++) {
+      for (let col = -2; col - 2 < canvasWidth / this.cellSize; col++) {
         const isColour1 = (row + col) % 2 === 0;
-        ctx.fillStyle = isColour1 ?
-          'hsl(215 100 74)'
-        : 'hsl(241 50 50)'
+        ctx.fillStyle = ctx.strokeStyle = isColour1 ?
+          checkColour1
+        : checkColour2
 
-        // Draw the square
-        ctx.fillRect((-this.tickCount % cellSize) + (col * cellSize), (this.tickCount) % cellSize + (row * cellSize), cellSize, cellSize);
+        ctx.fillRect(
+          ((-this.tickCount / 2) % (this.cellSize * 2)) + (col * this.cellSize),
+          ((this.tickCount / 4) % (this.cellSize * 2)) + (row * this.cellSize),
+          this.cellSize,
+          this.cellSize);
+
+        ctx.strokeRect(
+          ((-this.tickCount / 2) % (this.cellSize * 2)) + (col * this.cellSize),
+          ((this.tickCount / 4) % (this.cellSize * 2)) + (row * this.cellSize),
+          this.cellSize,
+          this.cellSize);
       }
     }
 
@@ -31,25 +85,35 @@ class Start {
     ];
     const crossSize = 1
 
-    for (let row = -2; row - 2 < canvasHeight / cellSize; row++) {
-      for (let col = -2; col - 2 < canvasWidth / cellSize; col++) {
-        var a = ((row + 8) + Math.abs(-this.tickCount % cellSize) * 8) % 8
-        var b = ((col + 8) + (this.tickCount % cellSize) * 8) % 8
+    const crossColour1Hue = this.crossColour1SandHue + Math.sin(this.tickCount/100) * (this.crossColour1WaterHue - this.crossColour1SandHue)
+    const crossColour1Sat = this.crossColour1SandSat + Math.sin(this.tickCount/100) * (this.crossColour1WaterSat - this.crossColour1SandSat)
+    const crossColour1Lum = this.crossColour1SandLum + Math.sin(this.tickCount/100) * (this.crossColour1WaterLum - this.crossColour1SandLum)
+    const crossColour2Hue = this.crossColour2SandHue + Math.sin(this.tickCount/100) * (this.crossColour2WaterHue - this.crossColour2SandHue)
+    const crossColour2Sat = this.crossColour2SandSat + Math.sin(this.tickCount/100) * (this.crossColour2WaterSat - this.crossColour2SandSat)
+    const crossColour2Lum = this.crossColour2SandLum + Math.sin(this.tickCount/100) * (this.crossColour2WaterLum - this.crossColour2SandLum)
+
+    const crossColour1 = 'hsl(' + crossColour1Hue + ' ' + crossColour1Sat + ' ' + crossColour1Lum + ')'
+    const crossColour2 = 'hsl(' + crossColour2Hue + ' ' + crossColour2Sat + ' ' + crossColour2Lum + ')'
+
+    for (let row = -8; row < canvasHeight / this.cellSize; row++) {
+      for (let col = 0; col - 8 < canvasWidth / this.cellSize; col++) {
+        var a = (row + 8) % 8
+        var b = (col + 8) % 8
 
         ctx.fillStyle = crossPatternWave[a][b] ?
-          'hsl(186 92 79)'
-         : 'hsl(234 100 34)'
+          crossColour1
+        : crossColour2
 
         ctx.fillRect(
-          (-this.tickCount % cellSize) + (col * cellSize - cellSize/8) - crossSize * 2,
-          (this.tickCount) % cellSize + (row * cellSize - cellSize/32) - crossSize,
-          (cellSize/4) + crossSize*4,
-          (cellSize/16) + crossSize*2)
+          ((-this.tickCount / 2) % (this.cellSize * 8)) + (col * this.cellSize - this.cellSize/8) - crossSize * 2,
+          ((this.tickCount / 4) % (this.cellSize * 8)) + (row * this.cellSize - this.cellSize/32) - crossSize,
+          (this.cellSize/4) + crossSize*4,
+          (this.cellSize/16) + crossSize*2)
         ctx.fillRect(
-          (-this.tickCount % cellSize) + (col * cellSize - cellSize/32) - crossSize,
-          (this.tickCount) % cellSize + (row * cellSize - cellSize/8) - crossSize*2,
-          (cellSize/16) + crossSize *2,
-          (cellSize/4) + crossSize * 4)
+          ((-this.tickCount / 2) % (this.cellSize * 8)) + (col * this.cellSize - this.cellSize/32) - crossSize,
+          ((this.tickCount / 4) % (this.cellSize * 8)) + (row * this.cellSize - this.cellSize/8) - crossSize*2,
+          (this.cellSize/16) + crossSize *2,
+          (this.cellSize/4) + crossSize * 4)
       }
     }
 
