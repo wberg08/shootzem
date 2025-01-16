@@ -36,6 +36,23 @@ class Level2 {
   static crossColour2SandSat = 50
   static crossColour2SandLum = 17
 
+  static cellGrid1XOffset = 0
+  static cellGrid1YOffset = 200
+  static cellGrid1Rows = 15
+  static cellGrid1Cols = 15
+  static cellGrid1Transform1 = 0.1
+  static cellGrid1Transform2 = 0.7
+  static cellGrid1Transform3 = 0.9
+  static cellGrid1Transform4 = 0
+
+  static cellGrid2XOffset = 400
+  static cellGrid2YOffset = 0
+  static cellGrid2Rows = 15
+  static cellGrid2Cols = 15
+  static cellGrid2Transform1 = 0.2
+  static cellGrid2Transform2 = 0.6
+  static cellGrid2Transform3 = 0.8
+  static cellGrid2Transform4 = 0
 
   static loseLineX = 150
 
@@ -59,7 +76,7 @@ class Level2 {
     if (hq) {
       this.cellSize = 20
     } else {
-      this.cellSize = 30
+      this.cellSize = 50
     }
   }
 
@@ -154,43 +171,25 @@ class Level2 {
     ))
   }
 
-  draw() {
-    background.forEach((backgroundElement) => {
-      backgroundElement.update()
-    })
-
-      ctx.save()
-
-    ctx.fillStyle = '#db6377'
-    ctx.fillRect(0, 0, canvasWidth, canvasHeight)
-
-    ctx.fillStyle = '#42bfdb'
-    ctx.fillRect(0, 0, Level1.loseLineX, canvasHeight)
-
-    ctx.globalAlpha = 0.5
-    ctx.drawImage(this.backgroundImage, 0, 0);
-    ctx.globalAlpha = 1
-
-    ctx.restore()
-
+  drawGrid(cellGridRows,
+    cellGridCols,
+    cellGridXOffset,
+    cellGridYOffset,
+    checkColour1Hue,
+    checkColour1Sat,
+    checkColour1Lum,
+    checkColour2Hue,
+    checkColour2Sat,
+    checkColour2Lum,
+    cellGridTransform1,
+    cellGridTransform2,
+    cellGridTransform3,
+    cellGridTransform4) {
     ctx.save()
-    ctx.transform(-0.1, 0.6, 0.9, 0, 0, 0);
+    ctx.transform(cellGridTransform1, cellGridTransform2, cellGridTransform3, cellGridTransform4, 0, 0)
 
-    // ctx.fillStyle = 'hsl(' + Math.sin(this.tickCount / 1000) * 100  + ' 100% 10%)'
-    // ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-
-    const checkColour1Hue = Level2.checkColour1SandHue + Math.sin(this.tickCount/500) * (Level2.checkColour1WaterHue - Level2.checkColour1SandHue)
-    const checkColour1Sat = Level2.checkColour1SandSat + Math.sin(this.tickCount/500) * (Level2.checkColour1WaterSat - Level2.checkColour1SandSat)
-    const checkColour1Lum = Level2.checkColour1SandLum + Math.sin(this.tickCount/500) * (Level2.checkColour1WaterLum - Level2.checkColour1SandLum)
-    const checkColour2Hue = Level2.checkColour2SandHue + Math.sin(this.tickCount/500) * (Level2.checkColour2WaterHue - Level2.checkColour2SandHue)
-    const checkColour2Sat = Level2.checkColour2SandSat + Math.sin(this.tickCount/500) * (Level2.checkColour2WaterSat - Level2.checkColour2SandSat)
-    const checkColour2Lum = Level2.checkColour2SandLum + Math.sin(this.tickCount/500) * (Level2.checkColour2WaterLum - Level2.checkColour2SandLum)
-
-    ctx.lineWidth = 1
-    // for (let row = -2; row - 2 < canvasHeight / this.cellSize; row++) {
-    //   for (let col = -2; col - 2 < canvasWidth / this.cellSize; col++) {
-    for (let row = -2; row - 20 < canvasHeight / this.cellSize; row++) {
-      for (let col = -2; col - 20 < canvasWidth / this.cellSize; col++) {
+    for (let row = -2; row < cellGridRows; row++) {
+      for (let col = -2; col < cellGridCols; col++) {
         const checkColourAlpFill = (row * 3 / (canvasHeight * 3 / this.cellSize)) + 0.2
         const checkColourAlpStroke = (row * 3 / (canvasHeight * 3 / this.cellSize)) - 0.2
 
@@ -209,14 +208,14 @@ class Level2 {
         : checkColour2Stroke
 
         ctx.fillRect(
-          ((-this.tickCount / 2) % (this.cellSize * 2)) + (col * this.cellSize),
-          ((this.tickCount / 4) % (this.cellSize * 2)) + (row * this.cellSize),
+          cellGridXOffset + ((-this.tickCount / 2) % (this.cellSize * 2)) + (col * this.cellSize),
+          cellGridYOffset + ((this.tickCount / 4) % (this.cellSize * 2)) + (row * this.cellSize),
           this.cellSize,
           this.cellSize);
 
         ctx.strokeRect(
-          ((-this.tickCount / 2) % (this.cellSize * 2)) + (col * this.cellSize),
-          ((this.tickCount / 4) % (this.cellSize * 2)) + (row * this.cellSize),
+          cellGridXOffset + ((-this.tickCount / 2) % (this.cellSize * 2)) + (col * this.cellSize),
+          cellGridYOffset + ((this.tickCount / 4) % (this.cellSize * 2)) + (row * this.cellSize),
           this.cellSize,
           this.cellSize);
       }
@@ -241,10 +240,8 @@ class Level2 {
     const crossColour2Sat = Level2.crossColour2SandSat + Math.sin(this.tickCount/500) * (Level2.crossColour2WaterSat - Level2.crossColour2SandSat)
     const crossColour2Lum = Level2.crossColour2SandLum + Math.sin(this.tickCount/500) * (Level2.crossColour2WaterLum - Level2.crossColour2SandLum)
 
-    // for (let row = -8; row < canvasHeight / this.cellSize; row++) {
-    //   for (let col = 0; col - 8 < canvasWidth / this.cellSize; col++) {
-    for (let row = -8; row - 20 < canvasHeight / this.cellSize; row++) {
-      for (let col = 0; col - 28 < canvasWidth / this.cellSize; col++) {
+    for (let row = -8; row < cellGridRows; row++) {
+      for (let col = 0; col < cellGridCols; col++) {
         const crossColorAlp = (row * 3 / (canvasHeight * 3 / this.cellSize) ) + 0.2
 
         const crossColour1 = 'hsla(' + crossColour1Hue + ' ' + crossColour1Sat + ' ' + crossColour1Lum + ' / ' + crossColorAlp + ')'
@@ -258,28 +255,102 @@ class Level2 {
         : crossColour2
 
         ctx.fillRect(
-          ((-this.tickCount / 2) % (this.cellSize * 8)) + (col * this.cellSize - this.cellSize/8) - crossSize * 2,
-          ((this.tickCount / 4) % (this.cellSize * 8)) + (row * this.cellSize - this.cellSize/32) - crossSize,
+          cellGridXOffset + ((-this.tickCount / 2) % (this.cellSize * 8)) + (col * this.cellSize - this.cellSize/8) - crossSize * 2,
+          cellGridYOffset + ((this.tickCount / 4) % (this.cellSize * 8)) + (row * this.cellSize - this.cellSize/32) - crossSize,
           (this.cellSize/4) + crossSize*4,
           (this.cellSize/16) + crossSize*2)
         ctx.fillRect(
-          ((-this.tickCount / 2) % (this.cellSize * 8)) + (col * this.cellSize - this.cellSize/32) - crossSize,
-          ((this.tickCount / 4) % (this.cellSize * 8)) + (row * this.cellSize - this.cellSize/8) - crossSize*2,
+          cellGridXOffset + ((-this.tickCount / 2) % (this.cellSize * 8)) + (col * this.cellSize - this.cellSize/32) - crossSize,
+          cellGridYOffset + ((this.tickCount / 4) % (this.cellSize * 8)) + (row * this.cellSize - this.cellSize/8) - crossSize*2,
           (this.cellSize/16) + crossSize *2,
           (this.cellSize/4) + crossSize * 4)
       }
     }
 
     ctx.restore()
+  }
+
+  draw() {
+    ctx.save()
+
+    ctx.fillStyle = '#db6377'
+    ctx.fillRect(0, 0, canvasWidth, canvasHeight)
+
+    ctx.fillStyle = '#42bfdb'
+    ctx.fillRect(0, 0, Level1.loseLineX, canvasHeight)
+
+    ctx.globalAlpha = 0.5
+    ctx.drawImage(this.backgroundImage, 0, 0);
+    ctx.globalAlpha = 1
+
+    ctx.restore()
+
+    background.forEach((backgroundElement) => {
+      backgroundElement.update()
+    })
+
+    const checkColour1Hue = Level2.checkColour1SandHue + Math.sin(this.tickCount/500) * (Level2.checkColour1WaterHue - Level2.checkColour1SandHue)
+    const checkColour1Sat = Level2.checkColour1SandSat + Math.sin(this.tickCount/500) * (Level2.checkColour1WaterSat - Level2.checkColour1SandSat)
+    const checkColour1Lum = Level2.checkColour1SandLum + Math.sin(this.tickCount/500) * (Level2.checkColour1WaterLum - Level2.checkColour1SandLum)
+    const checkColour2Hue = Level2.checkColour2SandHue + Math.sin(this.tickCount/500) * (Level2.checkColour2WaterHue - Level2.checkColour2SandHue)
+    const checkColour2Sat = Level2.checkColour2SandSat + Math.sin(this.tickCount/500) * (Level2.checkColour2WaterSat - Level2.checkColour2SandSat)
+    const checkColour2Lum = Level2.checkColour2SandLum + Math.sin(this.tickCount/500) * (Level2.checkColour2WaterLum - Level2.checkColour2SandLum)
+
+    this.drawGrid(Level2.cellGrid1Rows,
+      Level2.cellGrid1Cols,
+      Level2.cellGrid1XOffset,
+      Level2.cellGrid1YOffset,
+      checkColour1Hue,
+      checkColour1Sat,
+      checkColour1Lum,
+      checkColour2Hue,
+      checkColour2Sat,
+      checkColour2Lum,
+      Level2.cellGrid1Transform1,
+      Level2.cellGrid1Transform2,
+      Level2.cellGrid1Transform3,
+      Level2.cellGrid1Transform4)
+
+    ctx.save()
+    const points = [
+      [600, 200],
+      [800, 0],
+      [800, 500],
+      [600, 500]
+    ];
+    ctx.beginPath()
+    ctx.moveTo(points[0][0], points[0][1])
+    for (let i = 1; i < points.length; i++) {
+      ctx.lineTo(points[i][0], points[i][1])
+    }
+    ctx.closePath()
+    ctx.fillStyle = '#db6377'
+    ctx.fill();
+    ctx.restore()
+
+    this.drawGrid(Level2.cellGrid1Rows,
+      Level2.cellGrid2Cols,
+      Level2.cellGrid2XOffset,
+      Level2.cellGrid2YOffset,
+      checkColour1Hue,
+      checkColour1Sat,
+      checkColour1Lum,
+      checkColour2Hue,
+      checkColour2Sat,
+      checkColour2Lum,
+      Level2.cellGrid2Transform1,
+      Level2.cellGrid2Transform2,
+      Level2.cellGrid2Transform3,
+      Level2.cellGrid2Transform4)
 
     crumps.forEach((crump) => {
       crump.update()
     })
-    projectiles.forEach((projectile) => {
-      projectile.update()
-    })
     groundEnemies.forEach((groundEnemy) => {
       groundEnemy.update()
+    })
+    projectiles.forEach((projectile) => {
+      projectile.update()
     })
     flyingEnemies.forEach((flyingEnemy) => {
       flyingEnemy.update()
@@ -356,12 +427,12 @@ class Level2 {
       }
     })
 
-    if (this.tickCount == 0) {
-      Level2.wave1()
-    }
-    if (this.tickCount == 300) {
-      Level2.wave2()
-    }
+    // if (this.tickCount == 0) {
+    //   Level2.wave1()
+    // }
+    // if (this.tickCount == 300) {
+    //   Level2.wave2()
+    // }
     // if (this.tickCount == 400) {
     //   Level2.wave1()
     // }

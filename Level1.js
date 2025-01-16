@@ -205,11 +205,11 @@ class Level1 {
     crumps.forEach((crump) => {
       crump.update()
     })
-    projectiles.forEach((projectile) => {
-      projectile.update()
-    })
     groundEnemies.forEach((groundEnemy) => {
       groundEnemy.update()
+    })
+    projectiles.forEach((projectile) => {
+      projectile.update()
     })
     flyingEnemies.forEach((flyingEnemy) => {
       flyingEnemy.update()
