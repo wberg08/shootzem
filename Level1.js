@@ -330,6 +330,16 @@ class Level1 {
   start() {
     window.addEventListener('mousedown', this.mousedownListener)
     window.addEventListener('mousemove', this.mousemoveListener)
+
+    for (var i = 430; i <= 680; i += 125) {
+      for (var j = 90; j <= 500; j += 125) {
+        background.set(backgroundId, new Building2(backgroundId, i, j))
+        backgroundId++
+      }
+    }
+
+    background.set(backgroundId, new Building3(backgroundId, 250, 50))
+    backgroundId++
   }
 
   end() {

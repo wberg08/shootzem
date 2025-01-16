@@ -13,7 +13,7 @@ class Crump {
     this.alpha = 1
     this.crumpFlashTick = 0
     this.boomAudio = new Audio('./boom2.mp3')
-    this.boomAudio.volume = 0.75
+    this.boomAudio.volume = soundVolume
     this.boomAudio.play()
 
     this.bloomPoints = []
