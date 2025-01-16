@@ -205,38 +205,40 @@ class Level1 {
     ctx.fillRect(0, canvasHeight - 10, canvasWidth, 10)
     ctx.restore()
 
-    ctx.save()
-    var gradient3
-    if (hq) {
-      var highlight = Math.sin(this.tickCount / 50) * 10
+    // render the score
+    
+    // ctx.save()
+    // var gradient3
+    // if (hq) {
+    //   var highlight = Math.sin(this.tickCount / 50) * 10
 
-      gradient3 = ctx.createLinearGradient(highlight * 40, 0, highlight * 25 + 505, -50);
-      // Add three color stops
-      gradient3.addColorStop(0, "rgba(255, 255, 255, 0)")
-      gradient3.addColorStop(0.20, "rgba(255, 255, 255, 0)")
-      gradient3.addColorStop(0.25, "rgba(255, 255, 255, 1)")
-      gradient3.addColorStop(0.3, "rgba(255, 255, 255, 0)")
-      gradient3.addColorStop(0.5, "rgba(255, 255, 255, 0)")
-      gradient3.addColorStop(0.70, "rgba(255, 255, 255, 0)")
-      gradient3.addColorStop(0.75, "rgba(255, 255, 255, 1)")
-      gradient3.addColorStop(0.8, "rgba(255, 255, 255, 0)")
-      gradient3.addColorStop(1, "rgba(255, 255, 255, 0)")
-    }
+    //   gradient3 = ctx.createLinearGradient(highlight * 40, 0, highlight * 25 + 505, -50);
+    //   // Add three color stops
+    //   gradient3.addColorStop(0, "rgba(255, 255, 255, 0)")
+    //   gradient3.addColorStop(0.20, "rgba(255, 255, 255, 0)")
+    //   gradient3.addColorStop(0.25, "rgba(255, 255, 255, 1)")
+    //   gradient3.addColorStop(0.3, "rgba(255, 255, 255, 0)")
+    //   gradient3.addColorStop(0.5, "rgba(255, 255, 255, 0)")
+    //   gradient3.addColorStop(0.70, "rgba(255, 255, 255, 0)")
+    //   gradient3.addColorStop(0.75, "rgba(255, 255, 255, 1)")
+    //   gradient3.addColorStop(0.8, "rgba(255, 255, 255, 0)")
+    //   gradient3.addColorStop(1, "rgba(255, 255, 255, 0)")
+    // }
 
-    var text = "SCORE: " + score
+    // var text = "SCORE: " + score
 
-    ctx.font = "20px titleText"
-    ctx.textAlign = 'left'
-    ctx.fillStyle = "rgba(255, 255, 255)"
-    ctx.fillText(text, 15, 35)
-    if (hq) {
-      ctx.lineWidth = 10
+    // ctx.font = "20px titleText"
+    // ctx.textAlign = 'left'
+    // ctx.fillStyle = "rgba(255, 255, 255)"
+    // ctx.fillText(text, 15, 35)
+    // if (hq) {
+    //   ctx.lineWidth = 10
 
-      // ctx.strokeStyle = "rgba(255, 255, 255)"
-      ctx.strokeStyle = gradient3
-      ctx.strokeText(text, 15, 35)
-    }
-    ctx.restore()
+    //   // ctx.strokeStyle = "rgba(255, 255, 255)"
+    //   ctx.strokeStyle = gradient3
+    //   ctx.strokeText(text, 15, 35)
+    // }
+    // ctx.restore()
 
     // if (failed) {
     //   ctx.fillStyle = 'black'
