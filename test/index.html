@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Shootzem</title>
+  <style type="text/css">
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+
+    @font-face {
+      font-family: menuText;
+      src: url(font/oxanium-semibold-webfont.woff);
+    }
+
+    @font-face {
+      font-family: titleText;
+      src: url(font/Astro.woff);
+    }
+
+    .slider {
+      position: absolute; /* Allows positioning relative to the document or parent */
+      font-size: 16px;
+      border: none;
+      pointer-events: auto; /* Ensures it's interactable */
+    }
+    .slider:hover {
+      background-color: #0056b3;
+    }
+  </style>
+  <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+  <meta content="utf-8" http-equiv="encoding">
+</head>
+<body>
+  <canvas id='game'></canvas>
+  <script type="text/javascript" src="./warp.js"></script>
+</body>
+</html>
