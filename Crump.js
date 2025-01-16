@@ -1,3 +1,4 @@
+
 class Crump {
   static crumpDuration = 100
   static crumpFlashDuration = 2

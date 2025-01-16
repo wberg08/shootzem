@@ -342,7 +342,7 @@ class SinglePlayerLevelSelect {
   tick() {
     this.tickCount++
   }
-
+  
   mousedownListener(e) {
 
     if (e.clientX > 50

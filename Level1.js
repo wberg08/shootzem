@@ -272,7 +272,6 @@ class Level1 {
     // }
     // ctx.restore()
 
-    console.log("lost: " + lost)
     if (lost) {
       var wipeAlpha = Math.min(0.5,(lostTick / 100))
 
@@ -371,7 +370,6 @@ class Level1 {
       muzzleFlashId++;
     }
 
-    console.log("lost: " + lost)
     if (lost && (lostTick >= 100)) {
       currentScene.end()
       currentScene = new Start()
@@ -385,7 +383,6 @@ class Level1 {
   }
 
   start() {
-    console.log('lost: ' + lost)
 
     window.addEventListener('mousedown', this.mousedownListener)
     window.addEventListener('mousemove', this.mousemoveListener)

@@ -394,6 +394,7 @@ class BigTank {
       dieAudio.volume = soundVolume
       dieAudio.play()
       combo++
+      console.log('combo: ' + combo)
       if (combo > 1) {  
         foreground.set(foregroundId, new PowerUpHit(foregroundId, this.x, this.y, 'Combo x' + combo, '255, 255, 255', '24px'))
         foregroundId++

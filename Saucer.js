@@ -183,6 +183,9 @@ class Saucer {
     this.hitTick = 0
 
     if (this.hitPoints == 0) {
+      var boomAudio = new Audio('./boom2.mp3')
+      boomAudio.volume = soundVolume
+      boomAudio.play()
       var dieAudio = new Audio('./die.mp3')
       dieAudio.volume = soundVolume
       dieAudio.play()
