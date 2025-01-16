@@ -167,19 +167,19 @@ class Start {
     // START
 
     ctx.restore()
-    drawButton(50, (canvasHeight / 2),(canvasWidth / 2) - 100, (canvasHeight / 2) - 200, "SINGLE PLAYER")
+    this.drawButton(50, (canvasHeight / 2),(canvasWidth / 2) - 100, (canvasHeight / 2) - 200, "SINGLE PLAYER")
     ctx.save()
 
     // MULTIPLAYER
 
     ctx.restore()
-    drawButton((canvasWidth / 2) + 50, (canvasHeight / 2), (canvasWidth / 2) - 100, (canvasHeight / 2) - 200, "MULTIPLAYER")
+    this.drawButton((canvasWidth / 2) + 50, (canvasHeight / 2), (canvasWidth / 2) - 100, (canvasHeight / 2) - 200, "MULTIPLAYER")
     ctx.save()
 
     // music volumes
 
     ctx.restore()
-    drawButton(50, (canvasHeight / 2) + 150, (canvasWidth / 2) - 100, (canvasHeight / 2) - 200, "")
+    this.drawButton(50, (canvasHeight / 2) + 150, (canvasWidth / 2) - 100, (canvasHeight / 2) - 200, "")
     ctx.save()
 
     ctx.font = "32px titleText"
@@ -204,7 +204,7 @@ class Start {
     // quality toggle
 
     ctx.restore()
-    drawButton((canvasWidth / 2) + 50, (canvasHeight / 2) + 150, (canvasWidth / 2) - 100, (canvasHeight / 2) - 200, "")
+    this.drawButton((canvasWidth / 2) + 50, (canvasHeight / 2) + 150, (canvasWidth / 2) - 100, (canvasHeight / 2) - 200, "")
     ctx.save()
 
     if (hq) {
@@ -359,6 +359,54 @@ class Start {
       soundVolumeSlider.style.opacity = this.tickCount / 64
       musicVolumeSlider.style.opacity = this.tickCount / 64
     }
+  }
+
+  drawButton(x, y, width, height, text) {
+    ctx.save();
+
+    var gradient3
+    if (hq) {
+      var highlight = Math.sin(this.tickCount / 50) * 10
+
+      gradient3 = ctx.createLinearGradient(highlight * 40, 0, highlight * 25 + 505, -50);
+      // Add three color stops
+      gradient3.addColorStop(0, "rgba(255, 255, 255, 0)")
+      gradient3.addColorStop(0.20, "rgba(255, 255, 255, 0)")
+      gradient3.addColorStop(0.25, "rgba(255, 255, 255, 1)")
+      gradient3.addColorStop(0.3, "rgba(255, 255, 255, 0)")
+      gradient3.addColorStop(0.5, "rgba(255, 255, 255, 0)")
+      gradient3.addColorStop(0.70, "rgba(255, 255, 255, 0)")
+      gradient3.addColorStop(0.75, "rgba(255, 255, 255, 1)")
+      gradient3.addColorStop(0.8, "rgba(255, 255, 255, 0)")
+      gradient3.addColorStop(1, "rgba(255, 255, 255, 0)")
+    }
+
+    ctx.beginPath()
+    ctx.fillStyle = "rgb(100,100,100)"
+    ctx.strokeStyle = "rgb(200,200,200)"
+    ctx.lineWidth = 3
+    ctx.rect(x, y, width, height)
+    ctx.fill()
+    ctx.stroke()
+    if (hq) {
+      ctx.lineWidth = 3
+      ctx.strokeStyle = gradient3
+      ctx.stroke()
+    }
+
+    ctx.font = "20px titleText"
+    ctx.textAlign = 'center'
+    ctx.fillStyle = "rgba(255, 255, 255)"
+    ctx.fillText(text, x + width / 2, y + 10 + height / 2)
+    if (hq) {
+      ctx.lineWidth = 5
+
+      // ctx.strokeStyle = "rgba(255, 255, 255)"
+      ctx.strokeStyle = gradient3
+      ctx.strokeText(text, x + width / 2, y + 10 + height / 2)
+    }
+
+    ctx.restore()
   }
 
   tick() {
