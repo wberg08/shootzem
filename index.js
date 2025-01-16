@@ -12,7 +12,7 @@ const ctx = canvas.getContext('2d')
 const canvasWidth = 800
 const canvasHeight = 600
 
-var xMouse, yMouse;
+var xMouse, yMouse, hq = false, musicOn = true, music, startSound;
 
 canvas.width = canvasWidth
 canvas.height = canvasHeight
