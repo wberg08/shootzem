@@ -12,7 +12,7 @@ const ctx = canvas.getContext('2d')
 const canvasWidth = 800
 const canvasHeight = 600
 
-var xMouse, yMouse, easyMode = true, hq = false, music, startSound, score = 0, soundVolume = 0.5, lost = false, lostTick = 0
+var xMouse, yMouse, easyMode = true, hq = false, music, startSound, score = 0, soundVolume = 0.5, lost = false, won = false, lostTickCount = 0, wonTickCount = 0
 
 canvas.width = canvasWidth
 canvas.height = canvasHeight

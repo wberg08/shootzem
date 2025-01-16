@@ -273,7 +273,7 @@ class Level1 {
     // ctx.restore()
 
     if (lost) {
-      var wipeAlpha = Math.min(0.5,(lostTick / 100))
+      var wipeAlpha = Math.min(0.5,(lostTickCount / 100))
 
       ctx.save()
       ctx.beginPath()
@@ -286,19 +286,36 @@ class Level1 {
       this.drawButton((canvasWidth / 2) - 100, (canvasHeight / 2) - 50, 200, 100, "FAILED")
       ctx.restore()
     }
+
+    if (won) {
+      var wipeAlpha = Math.min(0.5,(wonTickCount / 100))
+
+      ctx.save()
+      ctx.beginPath()
+      ctx.rect(0, 0, canvasWidth, canvasHeight)
+      ctx.fillStyle = "rgba(0,0,0, " + wipeAlpha + ")"
+      ctx.fill()
+      ctx.restore()
+
+      ctx.save()
+      this.drawButton((canvasWidth / 2) - 100, (canvasHeight / 2) - 50, 200, 100, "YOU WON")
+      ctx.restore()
+    }
   }
 
   tick() {
-    groundEnemies.forEach((groundEnemy) => {
-      if (groundEnemy.x <= Level1.loseLineX) {
-        lost = true
-      }
-    })
-    flyingEnemies.forEach((flyingEnemy) => {
-      if (flyingEnemy.x <= Level1.loseLineX) {
-        lost = true
-      }
-    })
+    if (!won) {
+      groundEnemies.forEach((groundEnemy) => {
+        if (groundEnemy.x <= Level1.loseLineX) {
+          lost = true
+        }
+      })
+      flyingEnemies.forEach((flyingEnemy) => {
+        if (flyingEnemy.x <= Level1.loseLineX) {
+          lost = true
+        }
+      })
+    }
 
     if (this.tickCount == 0) {
       Level1.wave1()
@@ -319,9 +336,16 @@ class Level1 {
       Level1.wave4()
     }
 
+    if (this.tickCount > 2000 && !groundEnemies.length) {
+      won = true
+    }
+
     this.tickCount++
     if (lost) {
-      lostTick++
+      lostTickCount++
+    }
+    if (won) {
+      wonTickCount++
     }
   }
 
@@ -339,7 +363,7 @@ class Level1 {
       && e.clientX < canvasWidth
       && e.clientY < canvasHeight
       && projectiles.size < projectileCountLimit
-      && !lost) {
+      && !lost && !won) {
 
       // calculate where the end of the barrel is using this code lifted from Player.js - yuck!
       var theta = Math.atan((yMouse - playerY) / (xMouse - playerX))
@@ -370,11 +394,20 @@ class Level1 {
       muzzleFlashId++;
     }
 
-    if (lost && (lostTick >= 100)) {
+    if (lost && (lostTickCount >= 200)) {
       currentScene.end()
       currentScene = new Start()
       currentScene.start()
     }
+
+    if (won && (wonTickCount >= 200)) {
+      currentScene.end()
+      won = false
+      wonTickCount = 0
+      currentScene = new Level2()
+      currentScene.start()
+    }
+
   }
 
   mousemoveListener(e) {
@@ -399,7 +432,7 @@ class Level1 {
   }
 
   end() {
-    lostTick = 0
+    lostTickCount = 0
 
     groundEnemies = new Map()
     flyingEnemies = new Map()

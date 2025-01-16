@@ -153,6 +153,10 @@ class SinglePlayerLevelSelect {
     ctx.save()
 
     ctx.restore()
+    this.drawButton((canvasWidth / 2) + 50, (canvasHeight / 2),(canvasWidth / 2) - 100, (canvasHeight / 2) - 200, "LEVEL TWO")
+    ctx.save()
+
+    ctx.restore()
     this.drawButton(50, (canvasHeight / 2) + 150, (canvasWidth / 2) - 100, (canvasHeight / 2) - 200, "BACK")
     ctx.save()
 
@@ -351,6 +355,15 @@ class SinglePlayerLevelSelect {
       && e.clientY < canvasHeight - 200) {
       currentScene.end()
       currentScene = new Level1()
+      currentScene.start()
+    }
+
+    if (e.clientX > (canvasWidth / 2) + 50
+      && e.clientY > (canvasHeight / 2)
+      && e.clientX < canvasWidth - 50
+      && e.clientY < canvasHeight - 200) {
+      currentScene.end()
+      currentScene = new Level2()
       currentScene.start()
     }
 
