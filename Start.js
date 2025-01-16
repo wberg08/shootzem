@@ -5,147 +5,60 @@ class Start {
   draw() {
     ctx.save()
 
-    var colorBg = Math.sin(this.tickCount / 100) * 25
-    
-    ctx.beginPath()
-    ctx.fillStyle = "rgb(" + colorBg + ", " + colorBg + ", " + colorBg + ")"
-    ctx.rect(0, 0, canvas.width, canvas.height)
-    ctx.fill()
+    const cellSize = 30; // Size of each square
+
+    for (let row = -2; row - 2 < canvasHeight / cellSize; row++) {
+      for (let col = -2; col - 2 < canvasWidth / cellSize; col++) {
+        const isColour1 = (row + col) % 2 === 0;
+        ctx.fillStyle = isColour1 ?
+          'hsl(215 100 74)'
+        : 'hsl(241 50 50)'
+
+        // Draw the square
+        ctx.fillRect((-this.tickCount % cellSize) + (col * cellSize), (this.tickCount) % cellSize + (row * cellSize), cellSize, cellSize);
+      }
+    }
+
+    const crossPatternWave = [
+      [true, false, false, true, false, true, true, false],
+      [false, true, false, false, true, false, true, true],
+      [true, false, true, false, false, true, false, true],
+      [true, true, false, true, false, false, true, false],
+      [false, true, true, false, true, false, false, true],
+      [true, false, true, true, false, true, false, false],
+      [false, true, false, true, true, false, true, false],
+      [false, false, true, false, true, true, false, true]
+    ];
+    const crossSize = 1
+
+    for (let row = -2; row - 2 < canvasHeight / cellSize; row++) {
+      for (let col = -2; col - 2 < canvasWidth / cellSize; col++) {
+        var a = ((row + 8) + Math.abs(-this.tickCount % cellSize) * 8) % 8
+        var b = ((col + 8) + (this.tickCount % cellSize) * 8) % 8
+
+        ctx.fillStyle = crossPatternWave[a][b] ?
+          'hsl(186 92 79)'
+         : 'hsl(234 100 34)'
+
+        ctx.fillRect(
+          (-this.tickCount % cellSize) + (col * cellSize - cellSize/8) - crossSize * 2,
+          (this.tickCount) % cellSize + (row * cellSize - cellSize/32) - crossSize,
+          (cellSize/4) + crossSize*4,
+          (cellSize/16) + crossSize*2)
+        ctx.fillRect(
+          (-this.tickCount % cellSize) + (col * cellSize - cellSize/32) - crossSize,
+          (this.tickCount) % cellSize + (row * cellSize - cellSize/8) - crossSize*2,
+          (cellSize/16) + crossSize *2,
+          (cellSize/4) + crossSize * 4)
+      }
+    }
 
     ctx.restore()
-
-    var lengthX = Math.sin(this.tickCount / 100) + canvas.width * 2
-    var lengthY = Math.cos(this.tickCount / 100) + canvas.height * 2
-
-    var translateX = Math.sin(this.tickCount / 100) + canvas.width / 2
-    var translateY = Math.cos(this.tickCount / 100) + canvas.height / 2
-
-    var rectangle1AX = Math.sin(this.tickCount / 100)
-    var rectangle1AY = Math.cos(this.tickCount / 100)
-    var rectangle1BX = Math.sin(this.tickCount / 100)
-    var rectangle1BY = Math.cos(this.tickCount / 100)
-
-    var rectangle2AX = Math.sin(this.tickCount / 35)
-    var rectangle2AY = Math.cos(this.tickCount / 35)
-    var rectangle2BX = Math.sin(this.tickCount / 35)
-    var rectangle2BY = Math.cos(this.tickCount / 35)
-
-    var rectangle3AX = Math.sin(this.tickCount / 200)
-    var rectangle3AY = Math.cos(this.tickCount / 200) / 10
-    var rectangle3BX = Math.sin(this.tickCount / 200) / 10
-    var rectangle3BY = Math.cos(this.tickCount / 200)
-
-    var rectangle4AX = Math.sin(1 + this.tickCount / 90)
-    var rectangle4AY = Math.cos(1 + this.tickCount / 90)
-    var rectangle4BX = Math.sin(1 + this.tickCount / 90)
-    var rectangle4BY = Math.cos(1 + this.tickCount / 90)
-
-    var rectangle5AX = Math.sin(1 + this.tickCount / 25)
-    var rectangle5AY = Math.cos(1 + this.tickCount / 25)
-    var rectangle5BX = Math.sin(1 + this.tickCount / 25)
-    var rectangle5BY = Math.cos(1 + this.tickCount / 25)
-
-    var rectangle6AX = Math.sin(1 + this.tickCount / 150)
-    var rectangle6AY = Math.cos(1 + this.tickCount / 150) / 10
-    var rectangle6BX = Math.sin(1 + this.tickCount / 150) / 10
-    var rectangle6BY = Math.cos(1 + this.tickCount / 150)
 
     var colorA = 100 + (Math.sin(this.tickCount / 100) * 50)
     var colorB = 100 + (Math.cos(this.tickCount / 200) * 50)
     var colorC = (Math.sin(this.tickCount / 100) * 10)
     var colorD = (Math.sin(this.tickCount / 100) * 10)
-
-    // rectangle 1
-
-    ctx.save();
-
-    ctx.translate(translateX, translateY)
-    ctx.transform(rectangle1AX, rectangle1AY, 0, rectangle1BX, rectangle1BY, 0)
-    ctx.rotate(this.tickCount / 50);
-
-    ctx.beginPath()
-    ctx.fillStyle = "rgb(30," + colorC + ",15)"
-    ctx.rect(0, 0, lengthX, lengthY)
-    ctx.fill()
-
-    ctx.restore()
-
-    // rectangle 2
-
-    ctx.save();
-    
-    ctx.translate(translateX, translateY)
-    ctx.transform(rectangle2AX, rectangle2AY, 0, rectangle2BX, rectangle2BY, 0)
-    ctx.rotate(this.tickCount / 50);
-
-    ctx.beginPath()
-    ctx.fillStyle = "rgb(15," + colorD + ",30)"
-    ctx.rect(0, 0, lengthX, lengthY)
-    ctx.fill()
-
-    ctx.restore()
-
-    // rectangle 3
-
-    var colorE = colorC * 2
-
-    ctx.save();
-
-    ctx.translate(translateX, translateY)
-    ctx.transform(rectangle3AX, rectangle3AY, 0, rectangle3BX, rectangle3BY, 0)
-    ctx.rotate(-this.tickCount / 75);
-
-    ctx.beginPath()
-    ctx.fillStyle = "rgb(10," + colorE + ",5)"
-    ctx.rect(0, 0, lengthX, lengthY * 100)
-    ctx.fill()
-
-    ctx.restore()
-
-    // rectangle 4
-
-    ctx.save();
-
-    ctx.translate(translateX, translateY)
-    ctx.transform(rectangle4AX, rectangle4AY, 0, rectangle4BX, rectangle4BY, 0)
-    ctx.rotate(this.tickCount / 50);
-
-    ctx.beginPath()
-    ctx.fillStyle = "rgb(35," + (colorC / 2) + ",10)"
-    ctx.rect(0, 0, lengthX, lengthY)
-    ctx.fill()
-
-    ctx.restore()
-
-    // rectangle 5
-
-    ctx.save();
-    
-    ctx.translate(translateX, translateY)
-    ctx.transform(rectangle5AX, rectangle5AY, 0, rectangle5BX, rectangle5BY, 0)
-    ctx.rotate(this.tickCount / 50);
-
-    ctx.beginPath()
-    ctx.fillStyle = "rgb(10," + colorD + ",25)"
-    ctx.rect(0, 0, lengthX, lengthY)
-    ctx.fill()
-
-    ctx.restore()
-
-    // rectangle 6
-
-    var colorE = colorC * 1.5
-
-    ctx.save();
-
-    ctx.translate(translateX, translateY)
-    ctx.transform(rectangle6AX, rectangle6AY, 0, rectangle6BX, rectangle6BY, 0)
-    ctx.rotate(this.tickCount / 65);
-
-    ctx.beginPath()
-    ctx.fillStyle = "rgb(10," + colorE + ",5)"
-    ctx.rect(0, 0, lengthX, lengthY * 100)
-    ctx.fill()
 
     var highlight = Math.sin(this.tickCount / 50) * 10
 
@@ -166,21 +79,21 @@ class Start {
 
     // START
 
-    ctx.restore()
-    this.drawButton(50, (canvasHeight / 2),(canvasWidth / 2) - 100, (canvasHeight / 2) - 200, "SINGLE PLAYER")
     ctx.save()
+    this.drawButton(50, (canvasHeight / 2),(canvasWidth / 2) - 100, (canvasHeight / 2) - 200, "SINGLE PLAYER")
+    ctx.restore()
 
     // MULTIPLAYER
 
-    ctx.restore()
-    this.drawButton((canvasWidth / 2) + 50, (canvasHeight / 2), (canvasWidth / 2) - 100, (canvasHeight / 2) - 200, "MULTIPLAYER")
     ctx.save()
+    this.drawButton((canvasWidth / 2) + 50, (canvasHeight / 2), (canvasWidth / 2) - 100, (canvasHeight / 2) - 200, "MULTIPLAYER")
+    ctx.restore()
 
     // music volumes
 
-    ctx.restore()
-    this.drawButton(50, (canvasHeight / 2) + 150, (canvasWidth / 2) - 100, (canvasHeight / 2) - 200, "")
     ctx.save()
+    this.drawButton(50, (canvasHeight / 2) + 150, (canvasWidth / 2) - 100, (canvasHeight / 2) - 200, "")
+    ctx.restore()
 
     ctx.font = "32px titleText"
     ctx.textAlign = 'center'
@@ -199,12 +112,12 @@ class Start {
     //   ctx.fillText("❌", (canvasWidth / 4), (canvasHeight * 3 / 4) + 70)
     // }
 
-    ctx.restore()
-
     // quality toggle
 
-    ctx.restore()
+    ctx.save()
     this.drawButton((canvasWidth / 2) + 50, (canvasHeight / 2) + 150, (canvasWidth / 2) - 100, (canvasHeight / 2) - 200, "")
+    ctx.restore()
+
     ctx.save()
 
     if (hq) {
