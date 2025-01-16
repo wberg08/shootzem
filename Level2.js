@@ -55,6 +55,12 @@ class Level2 {
     this.roundBackgroundMask = ctx.createRadialGradient(canvasWidth / 3, canvasHeight * 1.5, 585, canvasWidth / 3, canvasHeight * 1.5 , 600)
     this.roundBackgroundMask.addColorStop(0, "rgba(0,0,0, 0)")
     this.roundBackgroundMask.addColorStop(1, "rgba(0,0,0, 1.0)")
+
+    if (hq) {
+      this.cellSize = 20
+    } else {
+      this.cellSize = 30
+    }
   }
 
   static bigTankPath1 = [
@@ -149,11 +155,29 @@ class Level2 {
   }
 
   draw() {
-    ctx.save()
-    ctx.transform(1, 0.2, 0.8, 1, 0, 0);
+    background.forEach((backgroundElement) => {
+      backgroundElement.update()
+    })
 
-    ctx.fillStyle = 'hsl(' + Math.sin(this.tickCount / 1000) * 100  + ' 100% 50%)'
-    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+      ctx.save()
+
+    ctx.fillStyle = '#db6377'
+    ctx.fillRect(0, 0, canvasWidth, canvasHeight)
+
+    ctx.fillStyle = '#42bfdb'
+    ctx.fillRect(0, 0, Level1.loseLineX, canvasHeight)
+
+    ctx.globalAlpha = 0.5
+    ctx.drawImage(this.backgroundImage, 0, 0);
+    ctx.globalAlpha = 1
+
+    ctx.restore()
+
+    ctx.save()
+    ctx.transform(-0.1, 0.6, 0.9, 0, 0, 0);
+
+    // ctx.fillStyle = 'hsl(' + Math.sin(this.tickCount / 1000) * 100  + ' 100% 10%)'
+    // ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
     const checkColour1Hue = Level2.checkColour1SandHue + Math.sin(this.tickCount/500) * (Level2.checkColour1WaterHue - Level2.checkColour1SandHue)
     const checkColour1Sat = Level2.checkColour1SandSat + Math.sin(this.tickCount/500) * (Level2.checkColour1WaterSat - Level2.checkColour1SandSat)
@@ -248,11 +272,11 @@ class Level2 {
 
     ctx.restore()
 
-    background.forEach((backgroundElement) => {
-      backgroundElement.update()
-    })
     crumps.forEach((crump) => {
       crump.update()
+    })
+    projectiles.forEach((projectile) => {
+      projectile.update()
     })
     groundEnemies.forEach((groundEnemy) => {
       groundEnemy.update()
@@ -260,15 +284,18 @@ class Level2 {
     flyingEnemies.forEach((flyingEnemy) => {
       flyingEnemy.update()
     })
+    projectiles.forEach((projectile) => {
+      const xRange = projectile.targetX - projectile.startX
+      const xProgress = (projectile.currentX - projectile.startX) / xRange
+      if (xProgress < 0.6)
+      projectile.draw()
+    })
     powerUps.forEach((powerUp) => {
       powerUp.update()
     })
     player.update()
     muzzleFlashes.forEach((muzzleFlash) => {
       muzzleFlash.update()
-    })
-    projectiles.forEach((projectile) => {
-      projectile.update()
     })
     foreground.forEach((foregroundElement) => {
       foregroundElement.update()
@@ -284,9 +311,6 @@ class Level2 {
     ctx.fillRect(0, 0, 10, canvasHeight)
     ctx.fillRect(canvasWidth - 10, 0, 10, canvasHeight)
     ctx.fillRect(0, canvasHeight - 10, canvasWidth, 10)
-
-    // ctx.fillRect(100, 100, 200, canvasHeight/2)
-    
     ctx.restore()
 
     if (lost) {

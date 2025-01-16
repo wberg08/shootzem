@@ -205,11 +205,20 @@ class Level1 {
     crumps.forEach((crump) => {
       crump.update()
     })
+    projectiles.forEach((projectile) => {
+      projectile.update()
+    })
     groundEnemies.forEach((groundEnemy) => {
       groundEnemy.update()
     })
     flyingEnemies.forEach((flyingEnemy) => {
       flyingEnemy.update()
+    })
+    projectiles.forEach((projectile) => {
+      const xRange = projectile.targetX - projectile.startX
+      const xProgress = (projectile.currentX - projectile.startX) / xRange
+      if (xProgress < 0.6)
+      projectile.draw()
     })
     powerUps.forEach((powerUp) => {
       powerUp.update()
@@ -217,9 +226,6 @@ class Level1 {
     player.update()
     muzzleFlashes.forEach((muzzleFlash) => {
       muzzleFlash.update()
-    })
-    projectiles.forEach((projectile) => {
-      projectile.update()
     })
     foreground.forEach((foregroundElement) => {
       foregroundElement.update()
