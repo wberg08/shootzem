@@ -12,7 +12,7 @@ const ctx = canvas.getContext('2d')
 const canvasWidth = 800
 const canvasHeight = 600
 
-var xMouse, yMouse, easyMode = true, hq = false, music, startSound, score = 0, soundVolume
+var xMouse, yMouse, easyMode = true, hq = false, music, startSound, score = 0, soundVolume = 0.5
 
 canvas.width = canvasWidth
 canvas.height = canvasHeight
@@ -75,6 +75,7 @@ function mousedownListener(e) {
 function gameLoop() {
   requestAnimationFrame(gameLoop)
   ctx.clearRect(0, 0, canvas.width, canvas.height)
+
   currentScene.draw()
   currentScene.tick()
 }
