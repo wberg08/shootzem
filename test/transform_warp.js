@@ -6,85 +6,81 @@
 // audio.addEventListener('canplaythrough', loadedAudio, false);
 // audio.src = url;
 
-const musicVolumeSlider = document.createElement('input');
-const soundVolumeSlider = document.createElement('input');
+const slider1 = document.createElement('input');
+const slider2 = document.createElement('input');
 const slider3 = document.createElement('input');
 const slider4 = document.createElement('input');
 const slider5 = document.createElement('input');
+const slider6 = document.createElement('input');
 const div2 = document.createElement('div')
 
-musicVolumeSlider.classList.add('slider');
-musicVolumeSlider.type = 'range';
-musicVolumeSlider.min = 0;
-musicVolumeSlider.max = 1;
-// musicVolumeSlider.value = 1; // Default value
-musicVolumeSlider.step = 0.1
+slider1.classList.add('slider');
+slider1.type = 'range';
+slider1.min = 0
+slider1.max = 10
+slider1.value = 5
+slider1.step = 0.1
+slider1.style.left = `120px`;
+slider1.style.top = `465px`;
+slider1.style.width = `200px`
 
-// Set the (x, y) position
-musicVolumeSlider.style.left = `120px`;
-musicVolumeSlider.style.top = `465px`;
-musicVolumeSlider.style.width = `200px`
-
-soundVolumeSlider.classList.add('slider');
-soundVolumeSlider.type = 'range';
-soundVolumeSlider.min = 137.49;
-soundVolumeSlider.max = 137.51;
-soundVolumeSlider.value = 137.5; // Default value
-soundVolumeSlider.step = 0.001
-
-// Add a click event listener
-soundVolumeSlider.addEventListener('mousemove', () => {
-  div2.innerText = soundVolumeSlider.value
-})
-
-// Set the (x, y) position
-soundVolumeSlider.style.left = `120px`;
-soundVolumeSlider.style.top = `515px`;
-soundVolumeSlider.style.width = `200px`
+slider2.classList.add('slider');
+slider2.type = 'range';
+slider2.min = 0
+slider2.max = 10
+slider2.value = 5
+slider2.step = 1
+slider2.style.left = `120px`;
+slider2.style.top = `515px`;
+slider2.style.width = `200px`
 
 slider3.classList.add('slider');
 slider3.type = 'range';
-slider3.min = 1;
-slider3.max = 50;
-// slider3.value = 50; // Default value
+slider3.min = 0
+slider3.max = 10
 slider3.step = 1
-
-// Set the (x, y) position
 slider3.style.left = `120px`;
 slider3.style.top = `565px`;
 slider3.style.width = `200px`
 
 slider4.classList.add('slider');
 slider4.type = 'range';
-slider4.min = 0;
-slider4.max = 2;
-// slider4.value = 50; // Default value
-slider4.step = 0.01
-
-// Set the (x, y) position
+slider4.min = 0
+slider4.max = 10
+slider4.value = 5
+slider4.step = 1
 slider4.style.left = `120px`;
 slider4.style.top = `615px`;
 slider4.style.width = `200px`
 
 slider5.classList.add('slider');
 slider5.type = 'range';
-slider5.min = 0;
-slider5.max = 50;
-slider5.value = 5; // Default value
+slider5.min = 0
+slider5.max = 10
+slider5.value = 5
 slider5.step = 1
-
-// Set the (x, y) position
 slider5.style.left = `120px`;
 slider5.style.top = `665px`;
 slider5.style.width = `200px`
 
-document.body.appendChild(musicVolumeSlider)
+slider6.classList.add('slider');
+slider6.type = 'range';
+slider6.min = 0
+slider6.max = 10
+slider6.value = 5
+slider6.step = 1
+slider6.style.left = `120px`;
+slider6.style.top = `715px`;
+slider6.style.width = `200px`
+
+document.body.appendChild(slider1)
 // document.body.appendChild(div1)
-document.body.appendChild(soundVolumeSlider)
+document.body.appendChild(slider2)
 document.body.appendChild(div2)
 document.body.appendChild(slider3)
 document.body.appendChild(slider4)
 document.body.appendChild(slider5)
+document.body.appendChild(slider6)
 
 const canvas = document.getElementById('game')
 const ctx = canvas.getContext('2d')
@@ -133,8 +129,10 @@ const cellSize = 20; // Size of each square
 function gameLoop() {
   requestAnimationFrame(gameLoop)
 
+  ctx.clearRect(0,0,canvasWidth,canvasHeight)
+
   ctx.save()
-  // ctx.transform(0.1,0.1,0.1,0.1,0.1,0.1);
+  ctx.transform(slider1.value / 10,slider2.value / 10,slider3.value / 10,slider4.value / 10,slider5.value / 10,slider6.value / 10);
 
   ctx.fillStyle = 'hsl(' + Math.sin(tick / 1000) * 100  + ' 100% 50%)'
   ctx.fillRect(0, 0, canvasWidth, canvasHeight);
