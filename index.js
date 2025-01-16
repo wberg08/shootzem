@@ -62,12 +62,12 @@ function mousedownListener(e) {
   currentScene = new Start()
   currentScene.start()
 
-  //
+  // 
   // hq = true
-  // currentScene.end()
-  // currentScene = new Level1()
-  // currentScene.start()
-  //
+  currentScene.end()
+  currentScene = new Level2()
+  currentScene.start()
+  // 
 
   music = new Audio('./start_music.mp3')
   music.volume = 0.5

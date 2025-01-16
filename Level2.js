@@ -4,9 +4,11 @@ class Level2 {
   won = false
   wonTickCount = 0
 
-  cellSize = 20; // Size of each square
+  cellSize = 50; // Size of each square
 
-  static starCount = 50
+  static gravelWidth = 20
+  static gravelHeight = 20
+  static gravelCellSize = 10
 
   static checkColour1WaterHue = 215
   static checkColour1WaterSat = 50
@@ -36,23 +38,27 @@ class Level2 {
   static crossColour2SandSat = 50
   static crossColour2SandLum = 17
 
-  static cellGrid1XOffset = 0
-  static cellGrid1YOffset = 200
-  static cellGrid1Rows = 15
-  static cellGrid1Cols = 15
-  static cellGrid1Transform1 = 0.1
-  static cellGrid1Transform2 = 0.7
-  static cellGrid1Transform3 = 0.9
+  static cellGrid1XOffset = -300
+  static cellGrid1YOffset = 400
+  static cellGrid1Rows = 16
+  static cellGrid1Cols = 17
+  static cellGrid1Transform1 = -0.1
+  static cellGrid1Transform2 = 0.4
+  static cellGrid1Transform3 = 0.7
   static cellGrid1Transform4 = 0
+  static cellGrid1XAnimateDirection = 1
+  static cellGrid1YAnimateDirection = 1
 
-  static cellGrid2XOffset = 400
-  static cellGrid2YOffset = 0
-  static cellGrid2Rows = 15
-  static cellGrid2Cols = 15
-  static cellGrid2Transform1 = 0.2
-  static cellGrid2Transform2 = 0.6
-  static cellGrid2Transform3 = 0.8
+  static cellGrid2XOffset = 1000
+  static cellGrid2YOffset = 200
+  static cellGrid2Rows = 16
+  static cellGrid2Cols = 17
+  static cellGrid2Transform1 = 0.1
+  static cellGrid2Transform2 = 0.4
+  static cellGrid2Transform3 = 0.7
   static cellGrid2Transform4 = 0
+  static cellGrid2XAnimateDirection = -1
+  static cellGrid2YAnimateDirection = 1
 
   static loseLineX = 150
 
@@ -73,10 +79,12 @@ class Level2 {
     this.roundBackgroundMask.addColorStop(0, "rgba(0,0,0, 0)")
     this.roundBackgroundMask.addColorStop(1, "rgba(0,0,0, 1.0)")
 
-    if (hq) {
-      this.cellSize = 20
-    } else {
-      this.cellSize = 50
+    this.gravel = []
+    for (var i = 0; i < Level2.gravelWidth; i++) {
+      this.gravel[i] = []
+      for (var j = 0; j < Level2.gravelHeight; j++) {
+        this.gravel[i].push(Math.random())
+      }
     }
   }
 
@@ -184,7 +192,9 @@ class Level2 {
     cellGridTransform1,
     cellGridTransform2,
     cellGridTransform3,
-    cellGridTransform4) {
+    cellGridTransform4,
+    xAnimateDirection,
+    yAnimateDirection) {
     ctx.save()
     ctx.transform(cellGridTransform1, cellGridTransform2, cellGridTransform3, cellGridTransform4, 0, 0)
 
@@ -208,14 +218,14 @@ class Level2 {
         : checkColour2Stroke
 
         ctx.fillRect(
-          cellGridXOffset + ((-this.tickCount / 2) % (this.cellSize * 2)) + (col * this.cellSize),
-          cellGridYOffset + ((this.tickCount / 4) % (this.cellSize * 2)) + (row * this.cellSize),
+          cellGridXOffset + ((xAnimateDirection * this.tickCount / 2) % (this.cellSize * 2)) + (col * this.cellSize),
+          cellGridYOffset + ((yAnimateDirection * this.tickCount / 4) % (this.cellSize * 2)) + (row * this.cellSize),
           this.cellSize,
           this.cellSize);
 
         ctx.strokeRect(
-          cellGridXOffset + ((-this.tickCount / 2) % (this.cellSize * 2)) + (col * this.cellSize),
-          cellGridYOffset + ((this.tickCount / 4) % (this.cellSize * 2)) + (row * this.cellSize),
+          cellGridXOffset + ((xAnimateDirection * this.tickCount / 2) % (this.cellSize * 2)) + (col * this.cellSize),
+          cellGridYOffset + ((yAnimateDirection * this.tickCount / 4) % (this.cellSize * 2)) + (row * this.cellSize),
           this.cellSize,
           this.cellSize);
       }
@@ -255,13 +265,13 @@ class Level2 {
         : crossColour2
 
         ctx.fillRect(
-          cellGridXOffset + ((-this.tickCount / 2) % (this.cellSize * 8)) + (col * this.cellSize - this.cellSize/8) - crossSize * 2,
-          cellGridYOffset + ((this.tickCount / 4) % (this.cellSize * 8)) + (row * this.cellSize - this.cellSize/32) - crossSize,
+          cellGridXOffset + ((xAnimateDirection * this.tickCount / 2) % (this.cellSize * 8)) + (col * this.cellSize - this.cellSize/8) - crossSize * 2,
+          cellGridYOffset + ((yAnimateDirection * this.tickCount / 4) % (this.cellSize * 8)) + (row * this.cellSize - this.cellSize/32) - crossSize,
           (this.cellSize/4) + crossSize*4,
           (this.cellSize/16) + crossSize*2)
         ctx.fillRect(
-          cellGridXOffset + ((-this.tickCount / 2) % (this.cellSize * 8)) + (col * this.cellSize - this.cellSize/32) - crossSize,
-          cellGridYOffset + ((this.tickCount / 4) % (this.cellSize * 8)) + (row * this.cellSize - this.cellSize/8) - crossSize*2,
+          cellGridXOffset + ((xAnimateDirection * this.tickCount / 2) % (this.cellSize * 8)) + (col * this.cellSize - this.cellSize/32) - crossSize,
+          cellGridYOffset + ((yAnimateDirection * this.tickCount / 4) % (this.cellSize * 8)) + (row * this.cellSize - this.cellSize/8) - crossSize*2,
           (this.cellSize/16) + crossSize *2,
           (this.cellSize/4) + crossSize * 4)
       }
@@ -309,24 +319,9 @@ class Level2 {
       Level2.cellGrid1Transform1,
       Level2.cellGrid1Transform2,
       Level2.cellGrid1Transform3,
-      Level2.cellGrid1Transform4)
-
-    ctx.save()
-    const points = [
-      [600, 200],
-      [800, 0],
-      [800, 500],
-      [600, 500]
-    ];
-    ctx.beginPath()
-    ctx.moveTo(points[0][0], points[0][1])
-    for (let i = 1; i < points.length; i++) {
-      ctx.lineTo(points[i][0], points[i][1])
-    }
-    ctx.closePath()
-    ctx.fillStyle = '#db6377'
-    ctx.fill();
-    ctx.restore()
+      Level2.cellGrid1Transform4,
+      Level2.cellGrid1XAnimateDirection,
+      Level2.cellGrid1YAnimateDirection)
 
     this.drawGrid(Level2.cellGrid1Rows,
       Level2.cellGrid2Cols,
@@ -341,7 +336,45 @@ class Level2 {
       Level2.cellGrid2Transform1,
       Level2.cellGrid2Transform2,
       Level2.cellGrid2Transform3,
-      Level2.cellGrid2Transform4)
+      Level2.cellGrid2Transform4,
+      Level2.cellGrid2XAnimateDirection,
+      Level2.cellGrid2YAnimateDirection)
+
+    ctx.save()
+
+    // gravel
+    // for (var i = this.gravel.length - 1; i >= 0; i--) {
+      for (var a = 0; a < Level2.gravelWidth; a++) {
+        for (var b = 0; b < Level2.gravelHeight; b++) {
+          const intensity = Math.floor((Math.sin(this.tickCount / 100 + 10 * this.gravel[a][b]) + 1) / 2 * 255);
+          const hex = intensity.toString(16).padStart(2, '0');
+          ctx.fillStyle = `#${hex}${hex}${hex}`
+          ctx.fillRect(a * Level2.gravelCellSize, b * Level2.gravelCellSize,Level2.gravelCellSize, Level2.gravelCellSize)
+        }
+      }
+    // }
+
+    const points = [
+      [600, 200],
+      [800, 0],
+      [800, canvasHeight],
+      [600, 400]
+    ];
+
+    ctx.beginPath()
+    ctx.moveTo(points[0][0], points[0][1])
+    for (let i = 1; i < points.length; i++) {
+      ctx.lineTo(points[i][0], points[i][1])
+    }
+    ctx.closePath()
+    ctx.lineWidth = 50
+    ctx.strokeStyle = '#99D'
+    ctx.stroke()
+
+    ctx.fillStyle = '#db6377'
+    ctx.fillRect(200,200,400,200);
+    
+    ctx.restore()
 
     crumps.forEach((crump) => {
       crump.update()
@@ -394,9 +427,7 @@ class Level2 {
       ctx.fill()
       ctx.restore()
 
-      ctx.save()
       this.drawButton((canvasWidth / 2) - 100, (canvasHeight / 2) - 50, 200, 100, "FAILED")
-      ctx.restore()
     }
 
     if (won) {
@@ -409,9 +440,7 @@ class Level2 {
       ctx.fill()
       ctx.restore()
 
-      ctx.save()
       this.drawButton((canvasWidth / 2) - 100, (canvasHeight / 2) - 50, 200, 100, "YOU WON")
-      ctx.restore()
     }
   }
 
