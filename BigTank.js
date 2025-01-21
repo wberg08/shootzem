@@ -48,8 +48,12 @@ class BigTank {
   }
 
   update() {
-    // path[0] = ['forwards', 0.5, 100]
-    // path[0] = [direction, speed, pathTicks]
+    slideZones.forEach((slideZone) => {
+      if (slideZone.slides(this.x, this.y)) {
+        this.x += Math.sin(slideZone.angle) * slideZone.speed
+        this.y += Math.cos(slideZone.angle) * slideZone.speed
+      }
+    });
 
     if (this.hitPoints <= 0) {
       if (this.deadTick > BigTank.deadTickLimit) {
@@ -123,6 +127,18 @@ class BigTank {
   }
 
   draw() {
+
+    var slides = false
+    slideZones.forEach((slideZone) => {
+      if (slideZone.slides(this.x, this.y)) {
+        // ctx.beginPath()
+        // // ctx.arc(this.x + turretCentreX, this.y + turretCentreY, BigTank.turretRadius, 0, Math.PI * 2, false)
+        // ctx.arc(this.x, this.y, BigTank.turretRadius * 3, 0, Math.PI * 2, false)
+        // ctx.fill()
+        slides = true
+      }
+    })
+
     const cosTheta = Math.cos(this.theta),
           sinTheta = Math.sin(this.theta),
           ledCosTheta = Math.cos(this.theta + 0.2),
@@ -144,6 +160,11 @@ class BigTank {
     ctx.save()
 
     ctx.strokeStyle = BigTank.bodyStrokeStyle
+
+    if (slides) {
+      ctx.lineWidth = 5
+      ctx.strokeStyle = 'rgba(255,255,255,0.5)'
+    }
 
     ctx.beginPath()
     ctx.moveTo(this.x - ax - bx, this.y - ay + by)
@@ -235,6 +256,8 @@ class BigTank {
       ctx.closePath()
       ctx.stroke()
     }
+
+    ctx.lineWidth = 1
 
     ctx.beginPath()
     ctx.arc(this.x + turretCentreX, this.y + turretCentreY, BigTank.turretRadius, 0, Math.PI * 2, false)
@@ -394,7 +417,6 @@ class BigTank {
       dieAudio.volume = soundVolume
       dieAudio.play()
       combo++
-      console.log('combo: ' + combo)
       if (combo > 1) {  
         foreground.set(foregroundId, new PowerUpHit(foregroundId, this.x, this.y, 'Combo x' + combo, '255, 255, 255', '24px'))
         foregroundId++

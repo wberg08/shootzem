@@ -80,7 +80,7 @@ class Level2 {
     this.roundBackgroundMask.addColorStop(1, "rgba(0,0,0, 1.0)")
 
     this.gravel = []
-    for (var i = 0; i < Level2.gravelWidth; i++) {
+    for (var i = 0; i < 3 * Level2.gravelWidth; i++) {
       this.gravel[i] = []
       for (var j = 0; j < Level2.gravelHeight; j++) {
         this.gravel[i].push(Math.random())
@@ -129,6 +129,10 @@ class Level2 {
     ['forwards', 0.75, 2000]
   ]
 
+  static bigTankPath3 = [
+    ['forwards', 1, 2000]
+  ]
+
   static slowTankPath = [
     ['forwards', 0.5, 5000]
   ]
@@ -146,8 +150,8 @@ class Level2 {
       groundEnemies.set(2, new BigTank(
         2,
         canvasWidth + 100,
-        300,
-        Level2.bigTankPath2,
+        100,
+        Level2.bigTankPath3,
         Level2.purpleTankBodyColour,
         Level2.purpleTankTrackColour,
         1,
@@ -159,7 +163,7 @@ class Level2 {
     flyingEnemies.set(1, new Saucer(
       1,
       canvasWidth + 100,
-      300,
+      500,
       Level2.straightPath,
       2,
       { type: 'projectile', hitPoints: 5 },
@@ -176,6 +180,18 @@ class Level2 {
       2,
       { type: 'projectile', hitPoints: 5 },
       flyingEnemies
+    ))
+
+    groundEnemies.set(10, new BigTank(
+      10,
+      canvasWidth + 100,
+      550,
+      Level2.bigTankPath2,
+      Level2.purpleTankBodyColour,
+      Level2.purpleTankTrackColour,
+      1,
+      undefined,
+      groundEnemies
     ))
   }
 
@@ -342,38 +358,70 @@ class Level2 {
 
     ctx.save()
 
+    ctx.fillStyle = `#000`
+
     // gravel
-    // for (var i = this.gravel.length - 1; i >= 0; i--) {
-      for (var a = 0; a < Level2.gravelWidth; a++) {
-        for (var b = 0; b < Level2.gravelHeight; b++) {
-          const intensity = Math.floor((Math.sin(this.tickCount / 100 + 10 * this.gravel[a][b]) + 1) / 2 * 255);
-          const hex = intensity.toString(16).padStart(2, '0');
+    for (var a = 0; a < Level2.gravelWidth; a++) {
+      for (var b = 0; b < Level2.gravelHeight; b++) {
+        if (a + b > -2 + (Level2.gravelWidth + Level2.gravelHeight) / 2) {
+          const intensity = Math.floor((Math.sin(this.tickCount / 100) * 10 + (10 * this.gravel[a][b]) * 10) - 60)
+          const hex = intensity.toString(16).padStart(2, '0')
           ctx.fillStyle = `#${hex}${hex}${hex}`
-          ctx.fillRect(a * Level2.gravelCellSize, b * Level2.gravelCellSize,Level2.gravelCellSize, Level2.gravelCellSize)
+          ctx.fillRect(600 + (a * Level2.gravelCellSize), (b * Level2.gravelCellSize),Level2.gravelCellSize, Level2.gravelCellSize)
         }
       }
-    // }
+    }
+    for (var a = 0; a < 3 * Level2.gravelWidth; a++) {
+      for (var b = 0; b < Level2.gravelHeight; b++) {
+        const intensity = Math.floor((Math.sin(this.tickCount / 100) * 10 + (10 * this.gravel[a][b]) * 10) - 60)
+        const hex = intensity.toString(16).padStart(2, '0')
+        ctx.fillStyle = `#${hex}${hex}${hex}`
+        ctx.fillRect(200 + (a * Level2.gravelCellSize), 200 + (b * Level2.gravelCellSize),Level2.gravelCellSize, Level2.gravelCellSize)
+      }
+    }
+    for (var a = 0; a < Level2.gravelWidth; a++) {
+      for (var b = 0; b < Level2.gravelHeight; b++) {
+        if (a - b > -1) {
+          const intensity = Math.floor((Math.sin(this.tickCount / 100) * 10 + (10 * this.gravel[a][b]) * 10) - 60)
+          const hex = intensity.toString(16).padStart(2, '0')
+          ctx.fillStyle = `#${hex}${hex}${hex}`
+          ctx.fillRect(600 + (a * Level2.gravelCellSize), 400 + (b * Level2.gravelCellSize),Level2.gravelCellSize, Level2.gravelCellSize)
+        }
+      }
+    }
 
-    const points = [
+    // polygon
+    const points0 = [
+      [200, 200],
       [600, 200],
-      [800, 0],
-      [800, canvasHeight],
-      [600, 400]
+      [canvasWidth, 0]
     ];
 
+    const points1 = [
+      [canvasWidth, canvasHeight],
+      [600, 400],
+      [200, 400]
+    ];
+
+    ctx.strokeStyle = '#119'
     ctx.beginPath()
-    ctx.moveTo(points[0][0], points[0][1])
-    for (let i = 1; i < points.length; i++) {
-      ctx.lineTo(points[i][0], points[i][1])
+    ctx.moveTo(points0[0][0], points0[0][1])
+    for (let i = 1; i < points0.length; i++) {
+      ctx.lineTo(points0[i][0], points0[i][1])
     }
-    ctx.closePath()
-    ctx.lineWidth = 50
-    ctx.strokeStyle = '#99D'
+    ctx.lineWidth = 13
     ctx.stroke()
 
-    ctx.fillStyle = '#db6377'
-    ctx.fillRect(200,200,400,200);
-    
+    ctx.beginPath()
+    ctx.moveTo(points1[0][0], points1[0][1])
+    for (let i = 1; i < points1.length; i++) {
+      ctx.lineTo(points1[i][0], points1[i][1])
+    }
+    ctx.stroke()
+
+    // ctx.fillStyle = '#db6377'
+    // ctx.fillRect(200,200,400,200);
+
     ctx.restore()
 
     crumps.forEach((crump) => {
@@ -456,12 +504,12 @@ class Level2 {
       }
     })
 
-    // if (this.tickCount == 0) {
-    //   Level2.wave1()
-    // }
-    // if (this.tickCount == 300) {
-    //   Level2.wave2()
-    // }
+    if (this.tickCount == 0) {
+      Level2.wave1()
+    }
+    if (this.tickCount == 300) {
+      Level2.wave2()
+    }
     // if (this.tickCount == 400) {
     //   Level2.wave1()
     // }
@@ -552,9 +600,12 @@ class Level2 {
   }
 
   start() {
-
     window.addEventListener('mousedown', this.mousedownListener)
     window.addEventListener('mousemove', this.mousemoveListener)
+
+    slideZones.set(slideZoneId, new SlideZone1())
+    slideZoneId++
+    slideZones.set(slideZoneId, new SlideZone2())
 
     for (var i = 430; i <= 680; i += 125) {
       for (var j = 90; j <= 500; j += 125) {

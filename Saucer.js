@@ -21,7 +21,6 @@ class Saucer {
   static hitTickLimit = 5
 
   constructor(id, x, y, path, hitPoints, powerUp, flyingEnemies) {
-
     this.id = id
     this.x = x
     this.y = y
@@ -35,6 +34,8 @@ class Saucer {
     this.hitPoints = hitPoints
     this.powerUp = powerUp
     this.flyingEnemies = flyingEnemies
+
+    this.tickCount = 0
   }
 
   update() {
@@ -99,10 +100,14 @@ class Saucer {
       this.pathI++
       this.pathTick = 0
     }
+
+    this.tickCount++
   }
 
   draw() {
     ctx.save()
+
+    ctx.lineWidth = 5 * Math.sin(this.tickCount / 10)
 
     ctx.fillStyle = Saucer.shadowFillStyle
 

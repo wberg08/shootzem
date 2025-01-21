@@ -60,15 +60,13 @@ class Projectile {
       })
 
       projectiles.delete(this.id)
-
+      if (!hit) {
+        combo = 0
+      }
       crumps.set(crumpId, new Crump(crumpId, this.targetX, this.targetY))
       crumpId++
     } else {
       this.draw()
-    }
-
-    if (!hit) {
-      combo = 0
     }
   }
 

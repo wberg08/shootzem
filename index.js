@@ -21,6 +21,7 @@ const playerX = 50
 const playerY = canvasHeight - 50
 
 const background = new Map()
+var slideZones = new Map()
 var groundEnemies = new Map()
 var flyingEnemies = new Map()
 const powerUps = new Map()
@@ -37,6 +38,7 @@ var powerUpId = 1
 var projectileId = 1
 var backgroundId = 1
 var foregroundId = 1
+var slideZoneId = 1
 
 var combo = 0;
 
@@ -63,7 +65,8 @@ function mousedownListener(e) {
   currentScene.start()
 
   // 
-  // hq = true
+  easyMode = false
+  hq = true
   currentScene.end()
   currentScene = new Level2()
   currentScene.start()
