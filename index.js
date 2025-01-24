@@ -68,7 +68,7 @@ function mousedownListener(e) {
   easyMode = false
   hq = true
   currentScene.end()
-  currentScene = new Level2()
+  currentScene = new Level3()
   currentScene.start()
   // 
 

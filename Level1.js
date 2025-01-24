@@ -342,7 +342,7 @@ class Level1 {
       Level1.wave4()
     }
 
-    if (this.tickCount > 2000 && !groundEnemies.length) {
+    if (this.tickCount > 1300 && !groundEnemies.length && !flyingEnemies.length) {
       won = true
     }
 
