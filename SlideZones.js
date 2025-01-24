@@ -3,7 +3,8 @@ class SlideZone1 {
   speed = 0.3
 
   slides(x,y) {
-    return y < 200 && x < 700
+    return x < 600 && y < 200
+    || x >= 600 && x + y < 800
   }
 }
 
@@ -12,6 +13,7 @@ class SlideZone2 {
   speed = 0.3
 
   slides(x,y) {
-    return y > 400 && x < 700
+    return x < 600 && y > 400
+    || x >= 600 && x - y < 200
   }
 }

@@ -2,7 +2,7 @@ class Saucer {
   static saucerRadius = 50
 
   static saucerFillStyle = '#9988AA'
-  static saucerOutlineStrokeStyle = '#665599'
+  static saucerOutlineStrokeStyle = '#433'
   static shadowFillStyle = 'rgba(0,0,0,0.1)'
 
   static saucerTrackCount = 20
@@ -107,8 +107,6 @@ class Saucer {
   draw() {
     ctx.save()
 
-    ctx.lineWidth = 5 * Math.sin(this.tickCount / 10)
-
     ctx.fillStyle = Saucer.shadowFillStyle
 
     ctx.beginPath()
@@ -116,20 +114,21 @@ class Saucer {
     ctx.fill()
 
     ctx.fillStyle = Saucer.saucerFillStyle
-    ctx.strokeStyle = Saucer.saucerOutlineStrokeStyle
 
     ctx.beginPath()
     ctx.arc(this.x, this.y, Saucer.saucerRadius, 0, 2 * Math.PI)
     ctx.fill()
-    ctx.stroke()
 
     var centroidX = this.x
     var centroidY = this.y
 
-    ctx.strokeStyle = Saucer.saucerInlineStrokeStyle
-    ctx.beginPath()
+    const intensity = Math.floor((Math.sin(-this.tickCount / 10) + 10) * 5)
+    const hex = intensity.toString(16).padStart(2, '0')
+    ctx.strokeStyle = `#66${hex}${hex}`
     const offset = 2 * Math.PI / Saucer.saucerTrackCount
+    ctx.lineWidth = (3 + 2*(Math.sin(this.tickCount / 10)))
 
+    ctx.beginPath()
     for (var i = 0; i < Saucer.saucerTrackCount; i++) {
       var startX = centroidX + Math.sin((offset*i) + (-this.pathTick / 100)) * Saucer.saucerTrackLength * Saucer.saucerRadius
       var startY = centroidY + Math.cos((offset*i) + (-this.pathTick / 100)) * Saucer.saucerTrackLength * Saucer.saucerRadius
@@ -143,6 +142,12 @@ class Saucer {
 
     ctx.beginPath()
     ctx.arc(this.x, this.y, Saucer.saucerRadius * Saucer.saucerTrackLength, 0, 2 * Math.PI)
+    ctx.stroke()
+
+    ctx.lineWidth = 5
+    ctx.strokeStyle = Saucer.saucerOutlineStrokeStyle
+    ctx.beginPath()
+    ctx.arc(this.x, this.y, Saucer.saucerRadius, 0, 2 * Math.PI)
     ctx.stroke()
 
     if (hq) {

@@ -127,7 +127,6 @@ class BigTank {
   }
 
   draw() {
-
     var slides = false
     slideZones.forEach((slideZone) => {
       if (slideZone.slides(this.x, this.y)) {
