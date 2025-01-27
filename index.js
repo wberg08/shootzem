@@ -65,11 +65,11 @@ function mousedownListener(e) {
   currentScene.start()
 
   // 
-  easyMode = false
-  hq = true
-  currentScene.end()
-  currentScene = new Level3()
-  currentScene.start()
+  // easyMode = false
+  // hq = true
+  // currentScene.end()
+  // currentScene = new Level3()
+  // currentScene.start()
   // 
 
   music = new Audio('./start_music.mp3')

@@ -4,6 +4,8 @@ class Start {
   cellSize = 20; // Size of each square
 
   static starCount = 50
+  static buttonNoiseCount = 30
+  static buttonCount = 4
 
   static checkColour1WaterHue = 215
   static checkColour1WaterSat = 50
@@ -41,6 +43,14 @@ class Start {
     this.stars = []
     for (var i = Start.starCount - 1; i >= 0; i--) {
       this.stars.push([Math.random() * canvasWidth, Math.random() * canvasHeight / 2, Math.random() > 0.2, Math.random()])
+    }
+
+    this.buttonNoise = new Array(Start.buttonCount)
+    for (var i = 0; i < Start.buttonCount; i++) {
+      this.buttonNoise[i] = []
+      for (var j = 0; j < Start.buttonNoiseCount; j++) {
+        this.buttonNoise[i].push([Math.random(), Math.random(), Math.random(), Math.random(), Math.random()])
+      }
     }
   }
 
@@ -188,19 +198,19 @@ class Start {
     // START
 
     ctx.save()
-    this.drawButton(50, (canvasHeight / 2),(canvasWidth / 2) - 100, (canvasHeight / 2) - 200, "SINGLE PLAYER")
+    this.drawButton(50, (canvasHeight / 2),(canvasWidth / 2) - 100, (canvasHeight / 2) - 200, "SINGLE PLAYER", 0)
     ctx.restore()
 
     // MULTIPLAYER
 
     ctx.save()
-    this.drawButton((canvasWidth / 2) + 50, (canvasHeight / 2), (canvasWidth / 2) - 100, (canvasHeight / 2) - 200, "MULTIPLAYER")
+    this.drawButton((canvasWidth / 2) + 50, (canvasHeight / 2), (canvasWidth / 2) - 100, (canvasHeight / 2) - 200, "MULTIPLAYER", 1)
     ctx.restore()
 
     // music volumes
 
     ctx.save()
-    this.drawButton(50, (canvasHeight / 2) + 150, (canvasWidth / 2) - 100, (canvasHeight / 2) - 200, "")
+    this.drawButton(50, (canvasHeight / 2) + 150, (canvasWidth / 2) - 100, (canvasHeight / 2) - 200, "", 2)
     ctx.restore()
 
     ctx.font = "32px titleText"
@@ -223,7 +233,7 @@ class Start {
     // quality toggle
 
     ctx.save()
-    this.drawButton((canvasWidth / 2) + 50, (canvasHeight / 2) + 150, (canvasWidth / 2) - 100, (canvasHeight / 2) - 200, "")
+    this.drawButton((canvasWidth / 2) + 50, (canvasHeight / 2) + 150, (canvasWidth / 2) - 100, (canvasHeight / 2) - 200, "", 3)
     ctx.restore()
 
     ctx.save()
@@ -382,10 +392,9 @@ class Start {
     }
   }
 
-  drawButton(x, y, width, height, text) {
+  drawButton(x, y, width, height, text, buttonIndex) {
     ctx.save();
 
-    var gradient3
     if (hq) {
       var highlight = Math.sin(this.tickCount / 50) * 10
 
@@ -402,13 +411,25 @@ class Start {
       gradient3.addColorStop(1, "rgba(255, 255, 255, 0)")
     }
 
-    ctx.beginPath()
     ctx.fillStyle = "rgb(100,100,100)"
-    ctx.strokeStyle = "rgb(200,200,200)"
     ctx.lineWidth = 3
-    ctx.rect(x, y, width, height)
-    ctx.fill()
-    ctx.stroke()
+    // ctx.fillRect(x, y, width, height)
+
+    for (var i = 0; i < this.buttonNoise[buttonIndex].length; i++) {
+      const noiseX = this.buttonNoise[buttonIndex][i][0] * width
+      const noiseY = this.buttonNoise[buttonIndex][i][1] * height
+      const noiseWidth = this.buttonNoise[buttonIndex][i][2] * 20
+      const noiseHeight = this.buttonNoise[buttonIndex][i][3] * 10
+
+      const intensity = Math.floor((this.buttonNoise[buttonIndex][i][4] + 1) / 2 * 255);
+      const hex = intensity.toString(16).padStart(2, '0');
+      ctx.fillStyle = `#${hex}${hex}${hex}`
+      ctx.fillRect(x + noiseX, y + noiseY, noiseWidth, noiseHeight)
+      // ctx.fillRect(386, 300, 30, 20)
+    }
+
+    ctx.strokeStyle = "rgb(200,200,200)"
+    ctx.strokeRect(x, y, width, height)
     if (hq) {
       ctx.lineWidth = 3
       ctx.strokeStyle = gradient3
