@@ -297,11 +297,10 @@ class SinglePlayerLevelSelect {
   drawButton(x, y, width, height, text) {
     ctx.save();
 
-    var gradient3
+    var gradient3 = ctx.createLinearGradient(highlight * 40, 0, highlight * 25 + 505, -50);
     if (hq) {
       var highlight = Math.sin(this.tickCount / 50) * 10
 
-      gradient3 = ctx.createLinearGradient(highlight * 40, 0, highlight * 25 + 505, -50);
       // Add three color stops
       gradient3.addColorStop(0, "rgba(255, 255, 255, 0)")
       gradient3.addColorStop(0.20, "rgba(255, 255, 255, 0)")
