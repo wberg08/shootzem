@@ -378,18 +378,17 @@ class Start {
       var wipeAlpha = 1 - (this.tickCount / 64)
 
       ctx.save()
-      ctx.beginPath()
-      ctx.rect(0, 0, canvasWidth, canvasHeight)
-      ctx.strokeStyle = "rgb(0,0,0)"
       ctx.fillStyle = "rgba(255,255,255, " + wipeAlpha + ")"
-      ctx.lineWidth = 3
-      ctx.fill()
-      ctx.stroke()
+      ctx.fillRect(0, 0, canvasWidth, canvasHeight)
       ctx.restore()
 
       soundVolumeSlider.style.opacity = this.tickCount / 64
       musicVolumeSlider.style.opacity = this.tickCount / 64
     }
+
+    ctx.lineWidth = 3
+    ctx.strokeStyle = "rgb(0,0,0)"
+    ctx.strokeRect(0, 0, canvasWidth, canvasHeight)
   }
 
   drawButton(x, y, width, height, text, buttonIndex) {
@@ -398,17 +397,27 @@ class Start {
     if (hq) {
       var highlight = Math.sin(this.tickCount / 50) * 10
 
-      var gradient3 = ctx.createLinearGradient(highlight * 40, 0, highlight * 25 + 505, -50)
-      // Add three color stops
-      gradient3.addColorStop(0, "rgba(255, 255, 255, 0)")
-      gradient3.addColorStop(0.20, "rgba(255, 255, 255, 0)")
-      gradient3.addColorStop(0.25, "rgba(255, 255, 255, 1)")
-      gradient3.addColorStop(0.3, "rgba(255, 255, 255, 0)")
-      gradient3.addColorStop(0.5, "rgba(255, 255, 255, 0)")
-      gradient3.addColorStop(0.70, "rgba(255, 255, 255, 0)")
-      gradient3.addColorStop(0.75, "rgba(255, 255, 255, 1)")
-      gradient3.addColorStop(0.8, "rgba(255, 255, 255, 0)")
-      gradient3.addColorStop(1, "rgba(255, 255, 255, 0)")
+      var buttonStrokeStyle = ctx.createLinearGradient(highlight * 40, 0, highlight * 25 + 505, -50)
+      buttonStrokeStyle.addColorStop(0, "rgba(200, 200, 200, 1)")
+      buttonStrokeStyle.addColorStop(0.20, "rgba(200, 200, 200, 1)")
+      buttonStrokeStyle.addColorStop(0.25, "rgba(255, 255, 255, 1)")
+      buttonStrokeStyle.addColorStop(0.3, "rgba(200, 200, 200, 1)")
+      buttonStrokeStyle.addColorStop(0.5, "rgba(200, 200, 200, 1)")
+      buttonStrokeStyle.addColorStop(0.70, "rgba(200, 200, 200, 1)")
+      buttonStrokeStyle.addColorStop(0.75, "rgba(255, 255, 255, 1)")
+      buttonStrokeStyle.addColorStop(0.8, "rgba(200, 200, 200, 1)")
+      buttonStrokeStyle.addColorStop(1, "rgba(255, 255, 255, 0)")
+
+      var buttonTextStrokeStyle = ctx.createLinearGradient(highlight * 40, 0, highlight * 25 + 505, -50)
+      buttonTextStrokeStyle.addColorStop(0, "rgba(255, 255, 255, 0)")
+      buttonTextStrokeStyle.addColorStop(0.20, "rgba(255, 255, 255, 0)")
+      buttonTextStrokeStyle.addColorStop(0.25, "rgba(255, 255, 255, 1)")
+      buttonTextStrokeStyle.addColorStop(0.3, "rgba(255, 255, 255, 0)")
+      buttonTextStrokeStyle.addColorStop(0.5, "rgba(255, 255, 255, 0)")
+      buttonTextStrokeStyle.addColorStop(0.70, "rgba(255, 255, 255, 0)")
+      buttonTextStrokeStyle.addColorStop(0.75, "rgba(255, 255, 255, 1)")
+      buttonTextStrokeStyle.addColorStop(0.8, "rgba(255, 255, 255, 0)")
+      buttonTextStrokeStyle.addColorStop(1, "rgba(255, 255, 255, 0)")
     }
 
     ctx.fillStyle = "rgb(100,100,100)"
@@ -430,25 +439,23 @@ class Start {
       }
     }
 
-    ctx.strokeStyle = "rgb(200,200,200)"
-    ctx.strokeRect(x, y, width, height)
-    // if (hq) {
-    //   ctx.lineWidth = 3
-    //   ctx.strokeStyle = gradient3
-    //   ctx.stroke()
-    // }
-
     ctx.font = "20px titleText"
     ctx.textAlign = 'center'
     ctx.fillStyle = "rgba(255, 255, 255)"
     ctx.fillText(text, x + width / 2, y + 10 + height / 2)
     if (hq) {
       ctx.lineWidth = 5
-
-      // ctx.strokeStyle = "rgba(255, 255, 255)"
-      ctx.strokeStyle = gradient3
+      ctx.strokeStyle = buttonTextStrokeStyle
       ctx.strokeText(text, x + width / 2, y + 10 + height / 2)
     }
+
+    ctx.lineWidth = 3
+    if (hq) {
+      ctx.strokeStyle = buttonStrokeStyle
+    } else {
+      ctx.strokeStyle = "rgb(200,200,200)"
+    }
+    ctx.strokeRect(x, y, width, height)
 
     ctx.restore()
   }
