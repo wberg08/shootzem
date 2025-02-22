@@ -439,10 +439,9 @@ class Level2 {
       flyingEnemy.update()
     })
     projectiles.forEach((projectile) => {
-      const xRange = projectile.targetX - projectile.startX
-      const xProgress = (projectile.currentX - projectile.startX) / xRange
-      if (xProgress < 0.6)
-      projectile.draw()
+      if (projectile.xProgress < 0.6) {
+        projectile.draw()
+      }
     })
     powerUps.forEach((powerUp) => {
       powerUp.update()

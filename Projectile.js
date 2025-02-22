@@ -17,8 +17,8 @@ class Projectile {
 
   update() {
     const xRange = this.targetX - this.startX
-    const xProgress = (this.currentX - this.startX) / xRange
-    const zProgress = xProgress * Projectile.airtime
+    this.xProgress = (this.currentX - this.startX) / xRange
+    const zProgress = this.xProgress * Projectile.airtime
 
     this.currentX += xRange / Projectile.airtime
     this.currentY += (this.targetY - this.startY) / Projectile.airtime
@@ -26,7 +26,7 @@ class Projectile {
 
     var hit = false
 
-    if (0.6 < xProgress && xProgress < 0.8) {
+    if (0.6 < this.xProgress && this.xProgress < 0.8) {
       flyingEnemies.forEach((enemy) => {
         if (enemy.constructor.name == 'Saucer') {
           if (Math.abs(this.currentX - enemy.x) < 50
