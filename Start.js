@@ -167,7 +167,7 @@ class Start {
     ctx.fillRect(0,0,canvasWidth, canvasHeight)
 
     for (var i = this.stars.length - 1; i >= 0; i--) {
-      const intensity = Math.floor((Math.sin(this.tickCount / 10 + 10 * this.stars[i][3]) + 1) / 2 * 255);
+      const intensity = Math.floor((Math.sin(this.tickCount / 100 + 10 * this.stars[i][3]) + 1) / 2 * 255);
       // Convert intensity to a 2-digit hex value
       const hex = intensity.toString(16).padStart(2, '0');
       // Create the hex color (same intensity for R, G, B to vary brightness)
